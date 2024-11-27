@@ -4,15 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Character/WarCharacterBase.h"
+#include "Interfaces/EnemyInterface.h"
 #include "WarEnemy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MECHANICS_API AWarEnemy : public AWarCharacterBase
+class MECHANICS_API AWarEnemy : public AWarCharacterBase, public IEnemyInterface
 {
-	GENERATED_BODY()
-
-	
+	GENERATED_BODY()	
 };
