@@ -14,7 +14,5 @@ class MECHANICS_API AWarEnemy : public AWarCharacterBase
 {
 	GENERATED_BODY()
 
-public:
-	AWarEnemy();
 	
 };

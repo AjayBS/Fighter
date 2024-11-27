@@ -3,8 +3,6 @@
 
 #include "Character/WarCharacter.h"
 
-#include "AbilitySystem/WarAbilitySystemComponent.h"
-#include "AbilitySystem/WarAttributeSet.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -29,7 +27,4 @@ AWarCharacter::AWarCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
 	FollowCamera->bUsePawnControlRotation = false;
-
-	AbilitySystemComponent = CreateDefaultSubobject<UWarAbilitySystemComponent>("AbilitySystemComponent");
-	AttributeSet = CreateDefaultSubobject<UWarAttributeSet>("AttributeSet");
 }

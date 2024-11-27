@@ -3,9 +3,15 @@
 
 #include "Character/WarCharacterBase.h"
 
+#include "AbilitySystem/WarAbilitySystemComponent.h"
+#include "AbilitySystem/WarAttributeSet.h"
+
 AWarCharacterBase::AWarCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	AbilitySystemComponent = CreateDefaultSubobject<UWarAbilitySystemComponent>("AbilitySystemComponent");
+	AttributeSet = CreateDefaultSubobject<UWarAttributeSet>("AttributeSet");
 }
 
 UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const
@@ -16,6 +22,6 @@ UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const
 void AWarCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
