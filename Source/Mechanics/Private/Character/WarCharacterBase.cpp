@@ -8,6 +8,11 @@ AWarCharacterBase::AWarCharacterBase()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
+UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 void AWarCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

@@ -23,7 +23,7 @@ void AWarPlayerController::BeginPlay()
 
 void AWarPlayerController::SetupInputComponent()
 {
-	Super:: SetupInputComponent();
+	Super::SetupInputComponent();
 
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AWarPlayerController::Move);

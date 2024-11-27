@@ -3,18 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/WarCharacterBase.h"
-#include "WarEnemy.generated.h"
+#include "AbilitySystemComponent.h"
+#include "WarAbilitySystemComponent.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MECHANICS_API AWarEnemy : public AWarCharacterBase
+class MECHANICS_API UWarAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-
-public:
-	AWarEnemy();
 	
 };
