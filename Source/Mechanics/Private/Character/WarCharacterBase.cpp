@@ -22,6 +22,7 @@ UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const
 void AWarCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
