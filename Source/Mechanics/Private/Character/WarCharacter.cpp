@@ -4,8 +4,39 @@
 #include "Character/WarCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Player/WarPlayerState.h"
+#include "Player/WarPlayerController.h"
+#include "UI/HUD/WarHUD.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogWarCharacter, Error, All);
+
+void AWarCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AWarPlayerState* WarPlayerState = GetPlayerState<AWarPlayerState>();
+	check(WarPlayerState);
+
+	AWarPlayerController* WarPlayerController = Cast<AWarPlayerController>(GetController());
+	if (WarPlayerController)
+	{
+		AWarHUD* WarHUD = Cast<AWarHUD>(WarPlayerController->GetHUD());
+		if (WarHUD)
+		{
+			WarHUD->InitOverlay(WarPlayerController, WarPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+		else
+		{
+			UE_LOG(LogWarCharacter, Error, TEXT("Failed to get a valid HUD for player character."));
+		}
+	}
+	else
+	{
+		UE_LOG(LogWarCharacter, Error, TEXT("Failed to get a valid player controller."));
+	}
+}
 
 AWarCharacter::AWarCharacter()
 {

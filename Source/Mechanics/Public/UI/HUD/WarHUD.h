@@ -7,6 +7,10 @@
 #include "WarHUD.generated.h"
 
 class UWarUserWidget;
+class UOverlayWidgetController;
+class UAbilitySystemComponent;
+class UAttributeSet;
+struct FWidgetControllerParams;
 
 /**
  * 
@@ -20,10 +24,16 @@ public:
 	UPROPERTY()
 	TObjectPtr<UWarUserWidget> OverlayWidget;
 
-protected:
-	virtual void BeginPlay();
+	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
+	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWarUserWidget> OverlayWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 };

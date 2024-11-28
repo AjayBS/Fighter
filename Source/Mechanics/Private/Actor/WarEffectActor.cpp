@@ -27,6 +27,7 @@ void AWarEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		
 		UWarAttributeSet* MutableWarAttributeSet = const_cast<UWarAttributeSet*>(WarAttributeSet);
 		MutableWarAttributeSet->SetHealth(WarAttributeSet->GetHealth() + 25.f);
+		MutableWarAttributeSet->SetStamina(WarAttributeSet->GetStamina() + 25.f);
 		Destroy();
 	}
 }

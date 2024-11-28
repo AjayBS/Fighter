@@ -25,6 +25,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
 
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	AWarCharacter();
 
