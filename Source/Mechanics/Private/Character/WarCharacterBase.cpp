@@ -26,3 +26,10 @@ void AWarCharacterBase::BeginPlay()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
+void AWarCharacterBase::AddCharacterAbilities()
+{
+	UWarAbilitySystemComponent* WarASC = Cast<UWarAbilitySystemComponent>(AbilitySystemComponent);
+
+	WarASC->AddCharacterAbilities(StartupAbilities);
+}
+

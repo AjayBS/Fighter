@@ -36,6 +36,8 @@ void AWarCharacter::BeginPlay()
 	{
 		UE_LOG(LogWarCharacter, Error, TEXT("Failed to get a valid player controller."));
 	}
+
+	AddCharacterAbilities();
 }
 
 AWarCharacter::AWarCharacter()

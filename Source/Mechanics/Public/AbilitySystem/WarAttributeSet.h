@@ -7,6 +7,8 @@
 #include "AbilitySystemComponent.h"
 #include "WarAttributeSet.generated.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogWarAttributeSet, Error, All);
+
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
  	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
