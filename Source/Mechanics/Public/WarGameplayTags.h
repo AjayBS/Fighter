@@ -15,8 +15,15 @@ struct FWarGameplayTags
 public:
 	static const FWarGameplayTags& Get() { return GameplayTags; }
 	static void InitializeNativeGameplayTags();
+
+	FGameplayTag Abilities_Primary_Punch;
+
+	FGameplayTag InputTag_LMB;
+	FGameplayTag InputTag_RMB;
+	FGameplayTag InputTag_1;
+
 protected:
 
 private:
-static FWarGameplayTags GameplayTags;
+	static FWarGameplayTags GameplayTags;
  };
