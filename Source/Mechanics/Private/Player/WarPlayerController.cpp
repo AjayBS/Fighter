@@ -3,8 +3,12 @@
 
 #include "Player/WarPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Input/WarInputComponent.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogWarCharacter, Error, All);
 
 AWarPlayerController::AWarPlayerController()
 {
@@ -67,15 +71,38 @@ void AWarPlayerController::Look(const FInputActionValue& Value)
 
 void AWarPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
 }
 
 void AWarPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Blue, *InputTag.ToString());
+	if (GetASC() == nullptr)
+	{
+		UE_LOG(LogWarCharacter, Error, TEXT("AbilitySystemComponent is null in player controller"));
+		return;
+	}
+
+	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
 void AWarPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(4, 3.f, FColor::Green, *InputTag.ToString());
+	if (GetASC() == nullptr)
+	{
+		UE_LOG(LogWarCharacter, Error, TEXT("AbilitySystemComponent is null in player controller"));
+		return;
+	}
+
+	GetASC()->AbilityInputTagHeld(InputTag);
+}
+
+UWarAbilitySystemComponent* AWarPlayerController::GetASC()
+{
+	if (WarAbilitySystemComponent == nullptr)
+	{
+		WarAbilitySystemComponent = Cast<UWarAbilitySystemComponent>(
+			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+
+	return WarAbilitySystemComponent;
 }

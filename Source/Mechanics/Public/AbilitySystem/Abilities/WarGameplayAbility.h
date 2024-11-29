@@ -14,6 +14,8 @@ class MECHANICS_API UWarGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
 
-
+public:	
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	FGameplayTag StartupInputTag;
 	
 };

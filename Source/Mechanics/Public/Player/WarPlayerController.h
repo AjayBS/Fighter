@@ -11,6 +11,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class UWarInputConfig;
+class UWarAbilitySystemComponent;
 
 /**
  * 
@@ -46,4 +47,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UWarInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UWarAbilitySystemComponent> WarAbilitySystemComponent;
+
+	UWarAbilitySystemComponent* GetASC();
 };

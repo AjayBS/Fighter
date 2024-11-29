@@ -3,19 +3,57 @@
 
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "WarGameplayTags.h"
+#include "AbilitySystem/Abilities/WarGameplayAbility.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogWarAbilitySystemComponent, Warning, All);
 
 void UWarAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
 {
-	for (TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1.f);
-		GiveAbilityAndActivateOnce(AbilitySpec);
+		if (const UWarGameplayAbility* WarAbility = Cast<UWarGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(WarAbility->StartupInputTag);
+			GiveAbility(AbilitySpec);
+		}
+	}
+}
+
+void UWarAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid())
+	{
+		UE_LOG(LogWarAbilitySystemComponent, Warning, TEXT("InputTag is invalid for character %s"), *GetOwnerActor()->GetName());
+		return;
 	}
 
-	const FWarGameplayTags& GameplayTags = FWarGameplayTags::Get();
-	GEngine->AddOnScreenDebugMessage(
-		-1, 
-		10.f, 
-		FColor::Orange, 
-		FString::Printf(TEXT("Tag: %s"), *GameplayTags.Abilities_Primary_Punch.ToString()));
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if (!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}	
+}
+
+void UWarAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid())
+	{
+		UE_LOG(LogWarAbilitySystemComponent, Warning, TEXT("InputTag is invalid for character %s"), *GetOwnerActor()->GetName());
+		return;
+	}
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);
+		}
+	}
 }
