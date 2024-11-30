@@ -8,7 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Input/WarInputComponent.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogWarCharacter, Error, All);
+DEFINE_LOG_CATEGORY_STATIC(LogWarPlayerController, Error, All);
 
 AWarPlayerController::AWarPlayerController()
 {
@@ -78,7 +78,7 @@ void AWarPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (GetASC() == nullptr)
 	{
-		UE_LOG(LogWarCharacter, Error, TEXT("AbilitySystemComponent is null in player controller"));
+		UE_LOG(LogWarPlayerController, Error, TEXT("AbilitySystemComponent is null in player controller"));
 		return;
 	}
 
@@ -89,7 +89,7 @@ void AWarPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (GetASC() == nullptr)
 	{
-		UE_LOG(LogWarCharacter, Error, TEXT("AbilitySystemComponent is null in player controller"));
+		UE_LOG(LogWarPlayerController, Error, TEXT("AbilitySystemComponent is null in player controller"));
 		return;
 	}
 
