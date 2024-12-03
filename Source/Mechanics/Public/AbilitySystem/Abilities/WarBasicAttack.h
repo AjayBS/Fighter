@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Abilities/WarGameplayAbility.h"
+#include "AbilitySystem/Abilities/WarDamageGameplayAbility.h"
 #include "WarBasicAttack.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MECHANICS_API UWarBasicAttack : public UWarGameplayAbility
+class MECHANICS_API UWarBasicAttack : public UWarDamageGameplayAbility
 {
 	GENERATED_BODY()
 

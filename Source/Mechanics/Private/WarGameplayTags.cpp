@@ -31,4 +31,14 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FName("InputTag.1"),
 		FString("Input tag for 1 key.")
 	);
+
+	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage"),
+		FString("Damage.")
+	);
+
+	GameplayTags.Ability_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Attack"),
+		FString("Attack ability tag.")
+	);
 }

@@ -19,6 +19,10 @@ UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+void AWarCharacterBase::InitialzeDefaultAttributes() const
+{
+}
+
 void AWarCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

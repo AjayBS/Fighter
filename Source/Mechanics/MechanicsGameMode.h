@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "MechanicsGameMode.generated.h"
 
+class UCharacterClassInfo;
+
 UCLASS(minimalapi)
 class AMechanicsGameMode : public AGameModeBase
 {
@@ -13,6 +15,9 @@ class AMechanicsGameMode : public AGameModeBase
 
 public:
 	AMechanicsGameMode();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
+	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
 };
 
 

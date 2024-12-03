@@ -22,6 +22,12 @@ public:
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_1;
 
+	FGameplayTag Damage;
+
+	FGameplayTag Ability_Attack;
+
+	TArray<FGameplayTag> DamageTypes;
+
 protected:
 
 private:

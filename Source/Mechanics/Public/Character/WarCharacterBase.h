@@ -20,6 +20,7 @@ public:
 	AWarCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	virtual void InitialzeDefaultAttributes() const;
 
 protected:
 	virtual void BeginPlay() override;
