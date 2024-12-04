@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "AbilitySystem/WarAttributeSet.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AWarCharacterBase::AWarCharacterBase()
 {
@@ -21,6 +22,31 @@ UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const
 
 void AWarCharacterBase::InitialzeDefaultAttributes() const
 {
+}
+
+void AWarCharacterBase::HitDetection(float CollisionRadius, FName SocketName)
+{
+	TArray<AActor*> ActorsToIgnore;
+	FHitResult HitResult;
+
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
+	ObjectTypesArray.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel1));
+	bool bHasHit = UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), 
+	GetMesh()->GetSocketLocation(SocketName),
+	GetMesh()->GetSocketLocation(SocketName),
+	CollisionRadius,
+	ObjectTypesArray, 
+	false,
+	ActorsToIgnore,
+	EDrawDebugTrace::ForDuration, 
+	HitResult, 
+	true);
+
+	if (bHasHit)
+	{
+		// Handle the hit result
+		UE_LOG(LogTemp, Warning, TEXT("Hit actor: %s"), *HitResult.GetActor()->GetName());
+	}
 }
 
 void AWarCharacterBase::BeginPlay()

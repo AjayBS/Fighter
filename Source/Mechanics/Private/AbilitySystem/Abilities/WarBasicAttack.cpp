@@ -18,7 +18,8 @@ void UWarBasicAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	UKismetSystemLibrary::PrintString(this, FString("ActivateAbility (C++)"), true, true, FLinearColor::Yellow, 3);
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 
-	const FWarGameplayTags GameplayTags = FWarGameplayTags::Get();
+	FWarGameplayTags GameplayTags = FWarGameplayTags::Get();
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, 50.f);
 
 	for (auto& Pair : DamageTypes)
 	{
