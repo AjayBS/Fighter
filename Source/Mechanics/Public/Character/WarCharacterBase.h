@@ -26,6 +26,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HitDetection(float CollisionRadius, FName SocketName);
 
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
+
 protected:
 	virtual void BeginPlay() override;
 	void AddCharacterAbilities();

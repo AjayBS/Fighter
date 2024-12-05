@@ -30,7 +30,8 @@ void AWarCharacterBase::HitDetection(float CollisionRadius, FName SocketName)
 	FHitResult HitResult;
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
-	ObjectTypesArray.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel1));
+	ObjectTypesArray.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+	ActorsToIgnore.Add(this);
 	bool bHasHit = UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), 
 	GetMesh()->GetSocketLocation(SocketName),
 	GetMesh()->GetSocketLocation(SocketName),
@@ -61,5 +62,20 @@ void AWarCharacterBase::AddCharacterAbilities()
 	UWarAbilitySystemComponent* WarASC = Cast<UWarAbilitySystemComponent>(AbilitySystemComponent);
 
 	WarASC->AddCharacterAbilities(StartupAbilities);
+}
+
+void AWarCharacterBase::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AWarCharacterBase::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
+}
+
+FVector AWarCharacterBase::GetCombatSocketLocation_Implementation()
+{
+	return GetMesh()->GetSocketLocation("hand_r");
 }
 
