@@ -76,6 +76,16 @@ AActor* AWarCharacterBase::GetCombatTarget_Implementation() const
 
 FVector AWarCharacterBase::GetCombatSocketLocation_Implementation()
 {
-	return GetMesh()->GetSocketLocation("hand_r");
+	return bLeftHanded ? GetMesh()->GetSocketLocation("hand_l") : GetMesh()->GetSocketLocation("hand_r");
+}
+
+bool AWarCharacterBase::IsLeftHandedAttack_Implementation()
+{
+	return bLeftHanded;
+}
+
+void AWarCharacterBase::SetIsLeftHandedAttack_Implementation(bool bLeftHand)
+{
+	bLeftHanded = bLeftHand;
 }
 

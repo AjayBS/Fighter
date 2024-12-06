@@ -29,6 +29,12 @@ public:
 	FVector GetCombatSocketLocation();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool IsLeftHandedAttack();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetIsLeftHandedAttack(bool bLeftHand);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetCombatTarget(AActor* InCombatTarget);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
