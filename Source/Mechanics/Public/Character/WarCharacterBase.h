@@ -26,11 +26,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HitDetection(float CollisionRadius, FName SocketName);
 
+	/**
+	 * Combat interface
+	 */
+
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	virtual AActor* GetCombatTarget_Implementation() const override;
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation() const override;
 	virtual bool IsLeftHandedAttack_Implementation() override;
 	virtual void SetIsLeftHandedAttack_Implementation(bool bLeftHand) override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
 	TObjectPtr<AActor> CombatTarget;
