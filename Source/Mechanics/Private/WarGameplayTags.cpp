@@ -41,4 +41,9 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Attack"),
 		FString("Attack ability tag.")
 	);
+
+	GameplayTags.Damage_Punch = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Punch"),
+		FString("Add physical punch damage.")
+	);
 }

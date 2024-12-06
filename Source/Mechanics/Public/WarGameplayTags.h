@@ -23,6 +23,7 @@ public:
 	FGameplayTag InputTag_1;
 
 	FGameplayTag Damage;
+	FGameplayTag Damage_Punch;
 
 	FGameplayTag Ability_Attack;
 
