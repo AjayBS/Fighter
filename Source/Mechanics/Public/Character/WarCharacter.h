@@ -31,6 +31,12 @@ protected:
 public:
 	AWarCharacter();
 
+	/**
+	 * Combat interface
+	 */
+
+	 virtual int32 GetPlayerLevel() override;
+
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/

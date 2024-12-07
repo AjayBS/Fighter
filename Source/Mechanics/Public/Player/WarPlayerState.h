@@ -16,5 +16,9 @@ class MECHANICS_API AWarPlayerState : public APlayerState
 
 public:
 	AWarPlayerState();
+	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
 	
+private:
+	UPROPERTY(VisibleAnywhere)
+	int32 Level = 1;
 };

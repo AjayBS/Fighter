@@ -38,6 +38,7 @@ void AWarCharacter::BeginPlay()
 	}
 
 	AddCharacterAbilities();
+	InitializeDefaultAttributes();
 }
 
 AWarCharacter::AWarCharacter()
@@ -60,4 +61,11 @@ AWarCharacter::AWarCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
 	FollowCamera->bUsePawnControlRotation = false;
+}
+
+int32 AWarCharacter::GetPlayerLevel()
+{
+	AWarPlayerState* WarPlayerState = GetPlayerState<AWarPlayerState>();
+	check(WarPlayerState);
+	return WarPlayerState->GetPlayerLevel();
 }

@@ -8,9 +8,7 @@
 UWarAttributeSet::UWarAttributeSet()
 {
 	InitHealth(100.f);
-	InitMaxHealth(100.f);
 	InitStamina(100.f);
-	InitMaxStamina(100.f);
 }
 
 void UWarAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -29,4 +27,15 @@ void UWarAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 			const bool bFatal = NewHealth <= 0.f;
 		}
 	}
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
+	{
+		SetStamina(FMath::Clamp(GetStamina(), 0.f, GetMaxStamina()));
+	}
+
 }

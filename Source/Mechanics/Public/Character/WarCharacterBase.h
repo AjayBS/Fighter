@@ -11,6 +11,7 @@
 class UAbilitySystemComponent;
 class UAttributeSet;
 class UGameplayAbility;
+class UGameplayEffect;
 
 UCLASS(Abstract)
 class MECHANICS_API AWarCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -21,7 +22,6 @@ public:
 	AWarCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
-	virtual void InitialzeDefaultAttributes() const;
 
 	UFUNCTION(BlueprintCallable)
 	void HitDetection(float CollisionRadius, FName SocketName);
@@ -45,7 +45,16 @@ protected:
 	virtual void BeginPlay() override;
 	void AddCharacterAbilities();
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
+
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
+	void InitializeDefaultAttributes() const;
+
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()

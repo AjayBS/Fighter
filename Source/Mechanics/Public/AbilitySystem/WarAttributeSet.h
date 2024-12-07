@@ -26,6 +26,10 @@ class MECHANICS_API UWarAttributeSet : public UAttributeSet
 public:
 	UWarAttributeSet();
 
+	/**
+	 * Primary Attributes
+	 */
+
 	UPROPERTY(BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UWarAttributeSet, Health);
@@ -41,6 +45,42 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData MaxStamina;
 	ATTRIBUTE_ACCESSORS(UWarAttributeSet, MaxStamina);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Vital Attributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, Armor);
+
+	/**
+	 * Secondary Attributes
+	 */
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Potion;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, Potion);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, Vigor);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData BlockChance;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, BlockChance);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData EnergyBar;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, EnergyBar);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData ChocoBar;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, ChocoBar);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Shards;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, Shards);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData CritHit;
+	ATTRIBUTE_ACCESSORS(UWarAttributeSet, CritHit);
 
 	/**
 	 * Meta attributes

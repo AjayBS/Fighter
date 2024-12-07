@@ -16,9 +16,15 @@ class MECHANICS_API AWarEnemy : public AWarCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 
+public:
+	/**
+	 * Combat interface
+	 */
+	 virtual int32 GetPlayerLevel() override;
+
 protected:
 	virtual void InitialzeDefaultAttributes() const;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
 
