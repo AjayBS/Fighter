@@ -38,7 +38,7 @@ void AWarCharacter::BeginPlay()
 	}
 
 	AddCharacterAbilities();
-	InitializeDefaultAttributes();
+	Super::InitializeDefaultAttributes();
 }
 
 AWarCharacter::AWarCharacter()

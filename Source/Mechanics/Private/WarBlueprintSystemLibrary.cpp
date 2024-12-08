@@ -45,7 +45,7 @@ UCharacterClassInfo* UWarBlueprintSystemLibrary::GetCharacterClassInfo(const UOb
 
 void UWarBlueprintSystemLibrary::InitializeDefaultAttributes(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass, float Level)
 {
-	AMechanicsGameMode* WarGameMode = Cast<AMechanicsGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
+	/*AMechanicsGameMode* WarGameMode = Cast<AMechanicsGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (WarGameMode == nullptr)
 	{
 		UE_LOG(LogWarBlueprintLibrary, Warning, TEXT("Game mode is nullptr. Returning."));
@@ -62,7 +62,7 @@ void UWarBlueprintSystemLibrary::InitializeDefaultAttributes(const UObject* Worl
 
 	for (TSubclassOf<UGameplayAbility> AbilityClass : ClassDefaultInfo.StartupAbilities)
 	{
-	}
+	}*/
 }
 
 void UWarBlueprintSystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, 

@@ -101,7 +101,6 @@ void AWarCharacterBase::SetIsLeftHandedAttack_Implementation(bool bLeftHand)
 	bLeftHanded = bLeftHand;
 }
 
-
 bool AWarCharacterBase::IsDead_Implementation() const
 {
 	return false;

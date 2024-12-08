@@ -7,8 +7,7 @@
 
 UWarAttributeSet::UWarAttributeSet()
 {
-	InitHealth(100.f);
-	InitStamina(100.f);
+	
 }
 
 void UWarAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -30,6 +29,7 @@ void UWarAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
+		const float NewHealth = GetHealth();
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 	}
 
@@ -37,5 +37,4 @@ void UWarAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	{
 		SetStamina(FMath::Clamp(GetStamina(), 0.f, GetMaxStamina()));
 	}
-
 }
