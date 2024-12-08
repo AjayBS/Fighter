@@ -72,8 +72,8 @@ void AWarCharacterBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayE
 
 void AWarCharacterBase::InitializeDefaultAttributes() const
 {
-	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
+	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 }
 
 void AWarCharacterBase::SetCombatTarget_Implementation(AActor* InCombatTarget)
