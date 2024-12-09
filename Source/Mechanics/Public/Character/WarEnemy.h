@@ -6,7 +6,10 @@
 #include "Character/WarCharacterBase.h"
 #include "Interfaces/EnemyInterface.h"
 #include "Character/CharacterClassInfo.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "WarEnemy.generated.h"
+
+class UWidgetComponent;
 
 /**
  * 
@@ -17,19 +20,31 @@ class MECHANICS_API AWarEnemy : public AWarCharacterBase, public IEnemyInterface
 	GENERATED_BODY()
 
 public:
+
+	AWarEnemy();
 	/**
 	 * Combat interface
 	 */
 	 virtual int32 GetPlayerLevel() override;
 
-protected:
-	virtual void InitialzeDefaultAttributes() const;
-	
+	 UPROPERTY(BlueprintAssignable)
+	 FOnAttributeChangedSignature OnHealthChanged;
+
+	 UPROPERTY(BlueprintAssignable)
+	 FOnAttributeChangedSignature OnMaxHealthChanged;
+
+protected:	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Elementalist;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
+
 	virtual void BeginPlay() override;
+	void SetInitialValuesForWidget();
+	void SetWidgetController();
+	void BindToEvents();
 };
