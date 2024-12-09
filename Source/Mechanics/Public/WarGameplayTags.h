@@ -27,6 +27,10 @@ public:
 
 	FGameplayTag Ability_Attack;
 
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
+
 	TArray<FGameplayTag> DamageTypes;
 
 protected:

@@ -6,6 +6,7 @@
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "AbilitySystem/WarAttributeSet.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "WarGameplayTags.h"
 
 AWarCharacterBase::AWarCharacterBase()
 {
@@ -86,20 +87,26 @@ AActor* AWarCharacterBase::GetCombatTarget_Implementation() const
 	return CombatTarget;
 }
 
-FVector AWarCharacterBase::GetCombatSocketLocation_Implementation() const
+FVector AWarCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) const
 {
-	return bLeftHanded ? GetMesh()->GetSocketLocation("hand_l") : GetMesh()->GetSocketLocation("hand_r");
+	const FWarGameplayTags& GameplayTags = FWarGameplayTags::Get();
+	// TO-DO Add IsValid(Weapon) check here.
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon))
+	{
+		return GetMesh()->GetSocketLocation(WeaponTipSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandSocketName);
+	}
+
+	return FVector();
 }
 
-bool AWarCharacterBase::IsLeftHandedAttack_Implementation()
-{
-	return bLeftHanded;
-}
-
-void AWarCharacterBase::SetIsLeftHandedAttack_Implementation(bool bLeftHand)
-{
-	bLeftHanded = bLeftHand;
-}
 
 bool AWarCharacterBase::IsDead_Implementation() const
 {
@@ -109,4 +116,9 @@ bool AWarCharacterBase::IsDead_Implementation() const
 AActor* AWarCharacterBase::GetAvatar_Implementation()
 {
 	return this;
+}
+
+TArray<FTaggedMontage> AWarCharacterBase::GetAttackMontages_Implementation()
+{
+	return AttackMontages;
 }
