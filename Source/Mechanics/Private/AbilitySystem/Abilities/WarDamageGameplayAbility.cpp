@@ -12,7 +12,7 @@ void UWarDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 	{
 		// TO-DO Add scaled damage here.
 		//float DamageMagnitude
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, Pair.Key, 10.f);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, Pair.Key, 50.f);
 	}
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(),
 				UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));

@@ -30,6 +30,12 @@ void AWarEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCoun
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0 : BaseWalkSpeed;
 }
 
+void AWarEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
 void AWarEnemy::BeginPlay()
 {
 	Super::BeginPlay();

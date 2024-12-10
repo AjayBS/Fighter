@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "AbilitySystem/WarAttributeSet.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "WarGameplayTags.h"
 
@@ -100,4 +101,14 @@ TArray<FTaggedMontage> AWarCharacterBase::GetAttackMontages_Implementation()
 UAnimMontage* AWarCharacterBase::GetHitReactMontage_Implementation()
 {
 	return HitReactMontage;
+}
+
+void AWarCharacterBase::Die()
+{
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
