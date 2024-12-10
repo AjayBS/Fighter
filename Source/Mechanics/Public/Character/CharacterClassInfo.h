@@ -13,7 +13,7 @@ class UGameplayAbility;
 UENUM(BlueprintType)
 enum class ECharacterClass : uint8
 {
-	Elementalist
+	GenericBoxer
 };
 
 USTRUCT(BlueprintType)
@@ -26,12 +26,6 @@ struct FCharacterClassDefaultInfo
 
 	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
 	TSubclassOf<UGameplayEffect> SecondaryAttributes;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Class defaults")
-	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
-	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
 
 /**
@@ -48,9 +42,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Common class defaults")
 	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Common class defaults")
-	TArray<TSubclassOf<UGameplayAbility>> SecondaryAttributes;
 	
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);
 };

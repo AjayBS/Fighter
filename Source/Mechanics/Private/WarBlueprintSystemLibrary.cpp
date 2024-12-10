@@ -22,15 +22,6 @@ void UWarBlueprintSystemLibrary::GiveStartupAbilities(const UObject* WorldContex
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 		ASC->GiveAbility(AbilitySpec);
 	}
-	const FCharacterClassDefaultInfo& DefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
-	for (TSubclassOf<UGameplayAbility> AbilityClass : DefaultInfo.StartupAbilities)
-	{
-		if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(ASC->GetAvatarActor()))
-		{
-			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, CombatInterface->GetPlayerLevel());
-			ASC->GiveAbility(AbilitySpec);
-		}
-	}
 }
 
 UCharacterClassInfo* UWarBlueprintSystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
@@ -45,7 +36,7 @@ UCharacterClassInfo* UWarBlueprintSystemLibrary::GetCharacterClassInfo(const UOb
 
 void UWarBlueprintSystemLibrary::InitializeDefaultAttributes(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass, float Level)
 {
-	/*AMechanicsGameMode* WarGameMode = Cast<AMechanicsGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
+	AMechanicsGameMode* WarGameMode = Cast<AMechanicsGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (WarGameMode == nullptr)
 	{
 		UE_LOG(LogWarBlueprintLibrary, Warning, TEXT("Game mode is nullptr. Returning."));
@@ -59,10 +50,6 @@ void UWarBlueprintSystemLibrary::InitializeDefaultAttributes(const UObject* Worl
 
 	const FGameplayEffectSpecHandle SecondaryAttributesSpecHandle = ASC->MakeOutgoingSpec(ClassDefaultInfo.SecondaryAttributes, Level, ASC->MakeEffectContext());
 	ASC->ApplyGameplayEffectSpecToSelf(*SecondaryAttributesSpecHandle.Data.Get());
-
-	for (TSubclassOf<UGameplayAbility> AbilityClass : ClassDefaultInfo.StartupAbilities)
-	{
-	}*/
 }
 
 void UWarBlueprintSystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, 

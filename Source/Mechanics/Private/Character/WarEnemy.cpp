@@ -38,6 +38,8 @@ void AWarEnemy::BeginPlay()
 	SetWidgetController();
 	SetInitialValuesForWidget();
 
+	UWarBlueprintSystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
+	UWarBlueprintSystemLibrary::InitializeDefaultAttributes(this, AbilitySystemComponent, CharacterClass, Level);
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 }
 
