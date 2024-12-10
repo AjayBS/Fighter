@@ -12,6 +12,7 @@ class UAbilitySystemComponent;
 class UAttributeSet;
 class UGameplayAbility;
 class UGameplayEffect;
+class UAnimMontage;
 
 UCLASS(Abstract)
 class MECHANICS_API AWarCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -23,9 +24,6 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-	UFUNCTION(BlueprintCallable)
-	void HitDetection(float CollisionRadius, FName SocketName);
-
 	/**
 	 * Combat interface
 	 */
@@ -36,6 +34,7 @@ public:
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
 	TObjectPtr<AActor> CombatTarget;
@@ -74,4 +73,7 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 };

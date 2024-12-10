@@ -21,32 +21,6 @@ UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-void AWarCharacterBase::HitDetection(float CollisionRadius, FName SocketName)
-{
-	TArray<AActor*> ActorsToIgnore;
-	FHitResult HitResult;
-
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
-	ObjectTypesArray.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
-	ActorsToIgnore.Add(this);
-	bool bHasHit = UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), 
-	GetMesh()->GetSocketLocation(SocketName),
-	GetMesh()->GetSocketLocation(SocketName),
-	CollisionRadius,
-	ObjectTypesArray, 
-	false,
-	ActorsToIgnore,
-	EDrawDebugTrace::ForDuration, 
-	HitResult, 
-	true);
-
-	if (bHasHit)
-	{
-		// Handle the hit result
-		UE_LOG(LogTemp, Warning, TEXT("Hit actor: %s"), *HitResult.GetActor()->GetName());
-	}
-}
-
 void AWarCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -121,4 +95,9 @@ AActor* AWarCharacterBase::GetAvatar_Implementation()
 TArray<FTaggedMontage> AWarCharacterBase::GetAttackMontages_Implementation()
 {
 	return AttackMontages;
+}
+
+UAnimMontage* AWarCharacterBase::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
 }

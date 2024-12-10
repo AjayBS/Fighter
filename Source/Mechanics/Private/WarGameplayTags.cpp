@@ -48,6 +48,15 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 	);
 
 	/**
+	 * Hit react
+	 */
+
+	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Effects.HitReact"),
+		FString("Hit react effects.")
+	);
+
+	/**
 	 * Montage
 	 */
 

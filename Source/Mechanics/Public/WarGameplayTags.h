@@ -31,6 +31,8 @@ public:
 	FGameplayTag Montage_Attack_RightHand;
 	FGameplayTag Montage_Attack_LeftHand;
 
+	FGameplayTag Effects_HitReact;
+
 	TArray<FGameplayTag> DamageTypes;
 
 protected:

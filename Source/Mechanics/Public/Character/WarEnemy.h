@@ -25,15 +25,27 @@ public:
 	/**
 	 * Combat interface
 	 */
-	 virtual int32 GetPlayerLevel() override;
+	virtual int32 GetPlayerLevel() override;
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
-	 UPROPERTY(BlueprintAssignable)
-	 FOnAttributeChangedSignature OnHealthChanged;
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
 
-	 UPROPERTY(BlueprintAssignable)
-	 FOnAttributeChangedSignature OnMaxHealthChanged;
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 
-protected:	
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 250.f;
+
+protected:
+	virtual void BeginPlay() override;
+	void SetInitialValuesForWidget();
+	void SetWidgetController();
+	void BindToEvents();
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
 
@@ -43,8 +55,4 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
 
-	virtual void BeginPlay() override;
-	void SetInitialValuesForWidget();
-	void SetWidgetController();
-	void BindToEvents();
 };
