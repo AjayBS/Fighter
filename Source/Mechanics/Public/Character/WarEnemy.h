@@ -10,6 +10,8 @@
 #include "WarEnemy.generated.h"
 
 class UWidgetComponent;
+class UBehaviorTree;
+class AWarAIController;
 
 /**
  * 
@@ -22,6 +24,8 @@ class MECHANICS_API AWarEnemy : public AWarCharacterBase, public IEnemyInterface
 public:
 
 	AWarEnemy();
+	virtual void PossessedBy(AController* NewController) override;
+
 	/**
 	 * Combat interface
 	 */
@@ -59,4 +63,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
 
+	UPROPERTY(EditAnywhere, Category= "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<AWarAIController> WarAIController;
 };

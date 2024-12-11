@@ -4,12 +4,14 @@
 #include "Character/WarEnemy.h"
 
 #include "AbilitySystem/WarAttributeSet.h"
+#include "AI/WarAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/WarUserWidget.h"
 #include "WarBlueprintSystemLibrary.h"
 #include "WarGameplayTags.h"
-
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarEnemyCharacter, Error, All);
 
@@ -17,6 +19,16 @@ AWarEnemy::AWarEnemy()
 {
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+}
+
+void AWarEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	WarAIController = Cast<AWarAIController>(NewController);
+
+	WarAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	WarAIController->RunBehaviorTree(BehaviorTree);
 }
 
 int32 AWarEnemy::GetPlayerLevel()
