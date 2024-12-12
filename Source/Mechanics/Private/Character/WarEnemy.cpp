@@ -29,6 +29,7 @@ void AWarEnemy::PossessedBy(AController* NewController)
 
 	WarAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	WarAIController->RunBehaviorTree(BehaviorTree);
+	WarAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
 }
 
 int32 AWarEnemy::GetPlayerLevel()
@@ -40,6 +41,7 @@ void AWarEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCoun
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0 : BaseWalkSpeed;
+	WarAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
 }
 
 void AWarEnemy::Die()
