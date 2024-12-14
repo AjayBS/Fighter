@@ -3,12 +3,14 @@
 
 #include "Character/WarCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Player/WarPlayerState.h"
 #include "Player/WarPlayerController.h"
-#include "UI/HUD/WarHUD.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "UI/HUD/WarHUD.h"
+#include "WarGameplayTags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarCharacter, Error, All);
 
@@ -39,6 +41,21 @@ void AWarCharacter::BeginPlay()
 
 	AddCharacterAbilities();
 	Super::InitializeDefaultAttributes();
+	BindToEvents();
+}
+
+void AWarCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0 : BaseWalkSpeed;
+}
+
+void AWarCharacter::BindToEvents()
+{
+	AbilitySystemComponent->RegisterGameplayTagEvent(FWarGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+		this,
+		&AWarCharacter::HitReactTagChanged
+	);
 }
 
 AWarCharacter::AWarCharacter()
