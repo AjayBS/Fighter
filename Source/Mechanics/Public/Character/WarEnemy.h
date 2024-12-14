@@ -32,6 +32,7 @@ public:
 	virtual int32 GetPlayerLevel() override;
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	virtual void Die() override;
+	virtual bool IsAI_Implementation() const override { return true; }
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;

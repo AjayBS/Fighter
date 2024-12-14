@@ -36,6 +36,7 @@ public:
 	 */
 
 	 virtual int32 GetPlayerLevel() override;
+	 virtual bool IsAI_Implementation() const override { return false; }
 
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

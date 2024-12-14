@@ -50,6 +50,9 @@ public:
 	bool IsDead() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool IsAI() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	AActor* GetAvatar();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
