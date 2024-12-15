@@ -7,6 +7,7 @@
 #include "MechanicsGameMode.generated.h"
 
 class UCharacterClassInfo;
+class UDebugMeleeWidget;
 
 UCLASS(minimalapi)
 class AMechanicsGameMode : public AGameModeBase
@@ -18,6 +19,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UDebugMeleeWidget> DebugMeleeWidget;
 };
 
 

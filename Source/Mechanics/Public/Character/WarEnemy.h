@@ -25,6 +25,7 @@ public:
 
 	AWarEnemy();
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void Destroyed() override;
 
 	/**
 	 * Combat interface
@@ -48,6 +49,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LifeSpan = 5.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<UWidgetComponent> DebugWidgetComponent;
 
 protected:
 	virtual void BeginPlay() override;

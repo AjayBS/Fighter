@@ -9,6 +9,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Subsystem/CombatAISubsystem.h"
 #include "UI/Widget/WarUserWidget.h"
 #include "WarBlueprintSystemLibrary.h"
 #include "WarGameplayTags.h"
@@ -19,6 +20,9 @@ AWarEnemy::AWarEnemy()
 {
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+
+	DebugWidgetComponent = CreateDefaultSubobject<UWidgetComponent>("DebugMelee");
+	DebugWidgetComponent->SetupAttachment(GetRootComponent());
 }
 
 void AWarEnemy::PossessedBy(AController* NewController)
@@ -30,6 +34,14 @@ void AWarEnemy::PossessedBy(AController* NewController)
 	WarAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	WarAIController->RunBehaviorTree(BehaviorTree);
 	WarAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
+}
+
+void AWarEnemy::Destroyed()
+{
+	if (UCombatAISubsystem* CombatAISubsystem = UCombatAISubsystem::Get(GetWorld()))
+	{
+		CombatAISubsystem->EnemyList.Remove(this);
+	}
 }
 
 int32 AWarEnemy::GetPlayerLevel()
@@ -61,6 +73,11 @@ void AWarEnemy::BeginPlay()
 	UWarBlueprintSystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
 	UWarBlueprintSystemLibrary::InitializeDefaultAttributes(this, AbilitySystemComponent, CharacterClass, Level);
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
+
+	if (UCombatAISubsystem* CombatAISubsystem = UCombatAISubsystem::Get(GetWorld()))
+	{
+		CombatAISubsystem->AddGradingAndUpdateWidget(this);
+	}
 }
 
 void AWarEnemy::SetInitialValuesForWidget()
