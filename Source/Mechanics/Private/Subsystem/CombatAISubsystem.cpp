@@ -7,6 +7,7 @@
 #include "UI/Widget/DebugMeleeWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Character/WarEnemy.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UCombatAISubsystem* UCombatAISubsystem::Get(const UWorld* InWorld)
 {
@@ -21,7 +22,7 @@ UCombatAISubsystem* UCombatAISubsystem::Get(const UWorld* InWorld)
 void UCombatAISubsystem::AddGradingAndUpdateWidget(AWarEnemy* Enemy)
 {
 	EnemyList.Add(Enemy);
-	float Grading = FMath::RandRange(0.0f, 5.0f);
+	float Grading = SetScoreBasedOnDirection(Enemy);
 	EnemyGrading.Add(Enemy, Grading);
 
 	AMechanicsGameMode* GameMode = Cast<AMechanicsGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -32,8 +33,23 @@ void UCombatAISubsystem::AddGradingAndUpdateWidget(AWarEnemy* Enemy)
 		MeleeUI->FightingGrade = Grading;
 
 		Enemy->DebugWidgetComponent->SetWidget(MeleeUI);
-
 	}
+}
+
+float UCombatAISubsystem::SetScoreBasedOnDirection(AWarEnemy* Enemy)
+{
+	float Grading = 0.f;
+	FVector EnemyForwardVector = Enemy->GetActorForwardVector();
+	ACharacter* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	FVector PlayerForwardVector = Player->GetActorForwardVector();
+
+	float DotProd = FVector::DotProduct(EnemyForwardVector, PlayerForwardVector);
+	DotProd *= -1.f;
+	float NormalizedValue = UKismetMathLibrary::NormalizeToRange(DotProd, -1.f, 1.f);
+	NormalizedValue += 0.5f;
+	Grading *= NormalizedValue;
+
+	return Grading;
 }
 
 void UCombatAISubsystem::ResetGradingValues()
@@ -43,9 +59,12 @@ void UCombatAISubsystem::ResetGradingValues()
 		Pair.Value = FMath::RandRange(0.0f, 5.0f);
 		AWarEnemy* Enemy = Cast<AWarEnemy>(Pair.Key);
 
-		if (UDebugMeleeWidget* MeleeUI = Cast<UDebugMeleeWidget>(Enemy->DebugWidgetComponent->GetWidget()))
+		if (Enemy != nullptr)
 		{
-			MeleeUI->FightingGrade = Pair.Value;
-		}
+			if (UDebugMeleeWidget* MeleeUI = Cast<UDebugMeleeWidget>(Enemy->DebugWidgetComponent->GetWidget()))
+			{
+				MeleeUI->FightingGrade = Pair.Value;
+			}
+		}		
 	}
 }

@@ -23,6 +23,8 @@ void AWarPlayerController::BeginPlay()
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	check(Subsystem);
 	Subsystem->AddMappingContext(WarContext, 0);
+
+	WarTeamId = FGenericTeamId(0);
 }
 
 void AWarPlayerController::SetupInputComponent()
@@ -34,6 +36,11 @@ void AWarPlayerController::SetupInputComponent()
 	AuraInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AWarPlayerController::Look);
 
 	AuraInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+}
+
+FGenericTeamId AWarPlayerController::GetGenericTeamId() const
+{
+	return WarTeamId;
 }
 
 void AWarPlayerController::Move(const FInputActionValue& InputActionValue)

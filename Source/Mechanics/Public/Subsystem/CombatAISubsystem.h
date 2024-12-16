@@ -19,6 +19,7 @@ class MECHANICS_API UCombatAISubsystem : public UWorldSubsystem
 public:
 	static UCombatAISubsystem* Get(const UWorld* InWorld);
 	void AddGradingAndUpdateWidget(AWarEnemy* Enemy);
+	float SetScoreBasedOnDirection(AWarEnemy* Enemy);
 
 	UFUNCTION(BlueprintCallable)
 	void ResetGradingValues();

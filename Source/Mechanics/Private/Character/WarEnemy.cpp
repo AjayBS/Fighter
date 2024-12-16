@@ -31,8 +31,16 @@ void AWarEnemy::PossessedBy(AController* NewController)
 
 	WarAIController = Cast<AWarAIController>(NewController);
 
-	WarAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-	WarAIController->RunBehaviorTree(BehaviorTree);
+	if (BehaviorTree != nullptr)
+	{
+		WarAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		WarAIController->RunBehaviorTree(BehaviorTree);
+	}
+	else
+	{
+		UE_LOG(LogWarEnemyCharacter, Warning, TEXT("No behavior tree set for enemy %s"), *GetName());
+	}
+	
 	WarAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
 }
 

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "GameplayTagContainer.h"
+#include "GenericTeamAgentInterface.h"
 #include "WarPlayerController.generated.h"
 
 class UInputMappingContext;
@@ -17,7 +18,7 @@ class UWarAbilitySystemComponent;
  * 
  */
 UCLASS()
-class MECHANICS_API AWarPlayerController : public APlayerController
+class MECHANICS_API AWarPlayerController : public APlayerController, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 	
@@ -27,8 +28,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	// Begin IGenericTeamAgentInterface interface
+	virtual FGenericTeamId GetGenericTeamId() const override;
+	// End IGenericTeamAgentInterface interface
 
 private:
+	UWarAbilitySystemComponent* GetASC();
+
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> WarContext;
 
@@ -51,5 +57,5 @@ private:
 	UPROPERTY()
 	TObjectPtr<UWarAbilitySystemComponent> WarAbilitySystemComponent;
 
-	UWarAbilitySystemComponent* GetASC();
+	FGenericTeamId WarTeamId;
 };

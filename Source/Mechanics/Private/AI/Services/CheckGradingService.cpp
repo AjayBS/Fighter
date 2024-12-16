@@ -17,7 +17,7 @@ void UCheckGradingService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* No
 		float HighestGrade = 0.f;
 		for (const TPair<AActor*, float>& Pair : CombatAISubsystem->EnemyGrading)
 		{
-			if (HighestGrade < Pair.Value)
+			if (HighestGrade <= Pair.Value)
 			{
 				HighestGrade = Pair.Value;
 				HighestGradedActor = Pair.Key;
