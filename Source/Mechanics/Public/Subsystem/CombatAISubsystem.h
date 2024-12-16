@@ -20,6 +20,9 @@ public:
 	static UCombatAISubsystem* Get(const UWorld* InWorld);
 	void AddGradingAndUpdateWidget(AWarEnemy* Enemy);
 
+	UFUNCTION(BlueprintCallable)
+	void ResetGradingValues();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TObjectPtr<AActor>> EnemyList;
 

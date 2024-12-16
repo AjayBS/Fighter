@@ -35,3 +35,17 @@ void UCombatAISubsystem::AddGradingAndUpdateWidget(AWarEnemy* Enemy)
 
 	}
 }
+
+void UCombatAISubsystem::ResetGradingValues()
+{
+	for (auto& Pair : EnemyGrading)
+	{
+		Pair.Value = FMath::RandRange(0.0f, 5.0f);
+		AWarEnemy* Enemy = Cast<AWarEnemy>(Pair.Key);
+
+		if (UDebugMeleeWidget* MeleeUI = Cast<UDebugMeleeWidget>(Enemy->DebugWidgetComponent->GetWidget()))
+		{
+			MeleeUI->FightingGrade = Pair.Value;
+		}
+	}
+}
