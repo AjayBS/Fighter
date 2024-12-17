@@ -75,4 +75,8 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FString("LeftHand.")
 	);
 
+	GameplayTags.Enemy_Status_Strafing = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Enemy.Status.Strafing"),
+		FString("Enemy Strafing.")
+	);
 }

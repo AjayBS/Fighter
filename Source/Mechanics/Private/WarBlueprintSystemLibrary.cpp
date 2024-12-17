@@ -2,6 +2,9 @@
 
 
 #include "WarBlueprintSystemLibrary.h"
+
+#include "AbilitySystem/WarAbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Player/WarPlayerController.h"
 #include "Mechanics/MechanicsGameMode.h"
 #include "AbilitySystemComponent.h"
@@ -12,6 +15,13 @@
 #include "Engine/OverlapResult.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarBlueprintLibrary, Warning, All);
+
+UWarAbilitySystemComponent* UWarBlueprintSystemLibrary::NativeGetWarASCFromActor(AActor* InActor)
+{
+	check(InActor);
+
+	return CastChecked<UWarAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InActor));
+}
 
 void UWarBlueprintSystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass)
 {
@@ -78,4 +88,31 @@ void UWarBlueprintSystemLibrary::GetLivePlayersWithinRadius(const UObject* World
 			}
 		}
 	}
+}
+
+void UWarBlueprintSystemLibrary::AddGameplayTagToActorIfNone(AActor* InActor, FGameplayTag TagToAdd)
+{
+	UWarAbilitySystemComponent* ASC = NativeGetWarASCFromActor(InActor);
+
+	if (!ASC->HasMatchingGameplayTag(TagToAdd))
+	{
+		ASC->AddLooseGameplayTag(TagToAdd);
+	}
+}
+
+void UWarBlueprintSystemLibrary::RemoveGameplayFromActorIfFound(AActor* InActor, FGameplayTag TagToRemove)
+{
+	UWarAbilitySystemComponent* ASC = NativeGetWarASCFromActor(InActor);
+
+	if (ASC->HasMatchingGameplayTag(TagToRemove))
+	{
+		ASC->RemoveLooseGameplayTag(TagToRemove);
+	}
+}
+
+bool UWarBlueprintSystemLibrary::NativeDoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck)
+{
+	UWarAbilitySystemComponent* ASC = NativeGetWarASCFromActor(InActor);
+
+	return ASC->HasMatchingGameplayTag(TagToCheck);
 }
