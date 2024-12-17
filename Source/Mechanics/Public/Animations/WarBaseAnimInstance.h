@@ -17,6 +17,6 @@ class MECHANICS_API UWarBaseAnimInstance : public UAnimInstance
 
 protected:
 	UFUNCTION(BlueprintPure, meta = (BlueprintThreadSafe))
-	bool DoesOwnerHaveTag(FGameplayTag TagToCheck) const;	
+	bool DoesOwnerHaveTag(FGameplayTag TagToCheck) const;
 
 };

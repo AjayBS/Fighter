@@ -12,5 +12,6 @@ bool UWarBaseAnimInstance::DoesOwnerHaveTag(FGameplayTag TagToCheck) const
 		return UWarBlueprintSystemLibrary::NativeDoesActorHaveTag(OwningPawn, TagToCheck);
 	}
 
+	UE_LOG(LogTemp, Error, TEXT("Failed to find the owning pawn."));
 	return false;
 }
