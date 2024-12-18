@@ -38,6 +38,8 @@ public:
 	FGameplayTag Enemy_Status_Strafing;
 	FGameplayTag Enemy_Status_UnderAttack;
 
+	FGameplayTag Shared_Status_Dead;
+
 protected:
 
 private:

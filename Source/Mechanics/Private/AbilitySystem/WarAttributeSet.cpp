@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
 #include "Interfaces/CombatInterface.h"
+#include "WarBlueprintSystemLibrary.h"
 #include "WarGameplayTags.h"
 
 UWarAttributeSet::UWarAttributeSet()
@@ -38,6 +39,8 @@ void UWarAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 				{
 					CombatInterface->Die();
 				}
+
+				UWarBlueprintSystemLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), FWarGameplayTags::Get().Shared_Status_Dead);
 			}
 			else
 			{

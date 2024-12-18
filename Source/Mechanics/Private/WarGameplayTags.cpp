@@ -88,4 +88,9 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FName("Enemy.Status.UnderAttack"),
 		FString("Enemy is under attack.")
 	);
+
+	GameplayTags.Shared_Status_Dead = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Shared.Status.Dead"),
+		FString("Dead.")
+	);
 }
