@@ -30,6 +30,8 @@ public:
 	FGameplayTag Montage_Attack_Weapon;
 	FGameplayTag Montage_Attack_RightHand;
 	FGameplayTag Montage_Attack_LeftHand;
+	FGameplayTag Montage_Attack_RightLeg;
+	FGameplayTag Montage_Attack_LeftLeg;
 
 	FGameplayTag Effects_HitReact;
 

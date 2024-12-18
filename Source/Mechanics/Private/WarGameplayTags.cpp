@@ -75,6 +75,16 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FString("LeftHand.")
 	);
 
+	GameplayTags.Montage_Attack_LeftLeg = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.LeftLeg"),
+		FString("LeftLeg.")
+	);
+
+	GameplayTags.Montage_Attack_RightLeg = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.RightLeg"),
+		FString("RightLeg.")
+	);
+
 	/**
 	 * Enemy tags
 	 */

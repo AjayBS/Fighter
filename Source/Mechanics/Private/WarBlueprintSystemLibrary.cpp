@@ -113,9 +113,13 @@ void UWarBlueprintSystemLibrary::RemoveGameplayFromActorIfFound(AActor* InActor,
 
 bool UWarBlueprintSystemLibrary::NativeDoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck)
 {
-	UWarAbilitySystemComponent* ASC = NativeGetWarASCFromActor(InActor);
-
-	return ASC->HasMatchingGameplayTag(TagToCheck);
+	if (InActor != nullptr)
+	{
+		UWarAbilitySystemComponent* ASC = NativeGetWarASCFromActor(InActor);
+		return ASC->HasMatchingGameplayTag(TagToCheck);
+	}
+	
+	return false;
 }
 
 void UWarBlueprintSystemLibrary::BP_DoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck, EWarConfirmType& OutConfirmType)

@@ -3,7 +3,7 @@
 
 #include "Character/WarCharacter.h"
 
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Player/WarPlayerState.h"
 #include "Player/WarPlayerController.h"
@@ -27,7 +27,7 @@ void AWarCharacter::BeginPlay()
 		AWarHUD* WarHUD = Cast<AWarHUD>(WarPlayerController->GetHUD());
 		if (WarHUD)
 		{
-			WarHUD->InitOverlay(WarPlayerController, WarPlayerState, AbilitySystemComponent, AttributeSet);
+			WarHUD->InitOverlay(WarPlayerController, WarPlayerState, Cast<UAbilitySystemComponent>(AbilitySystemComponent), AttributeSet);
 		}
 		else
 		{
@@ -71,7 +71,8 @@ AWarCharacter::AWarCharacter()
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; 
+	CameraBoom->TargetArmLength = 200.0f; 
+	CameraBoom->SocketOffset = FVector(0.f, 55.f, 65.f);
 	CameraBoom->bUsePawnControlRotation = true; 
 
 	// Create a follow camera
