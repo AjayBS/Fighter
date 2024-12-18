@@ -7,6 +7,7 @@
 #include "AbilitySystem/WarAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "MotionWarpingComponent.h"
 #include "WarGameplayTags.h"
 
 AWarCharacterBase::AWarCharacterBase()
@@ -15,6 +16,7 @@ AWarCharacterBase::AWarCharacterBase()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UWarAbilitySystemComponent>("AbilitySystemComponent");
 	AttributeSet = CreateDefaultSubobject<UWarAttributeSet>("AttributeSet");
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarpingComponent");
 }
 
 UAbilitySystemComponent* AWarCharacterBase::GetAbilitySystemComponent() const

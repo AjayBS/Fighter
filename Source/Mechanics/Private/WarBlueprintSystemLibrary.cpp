@@ -13,6 +13,7 @@
 #include "Character/CharacterClassInfo.h"
 #include "GameplayEffectTypes.h"
 #include "Engine/OverlapResult.h"
+#include "Player/WarPlayerController.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarBlueprintLibrary, Warning, All);
 
@@ -115,4 +116,19 @@ bool UWarBlueprintSystemLibrary::NativeDoesActorHaveTag(AActor* InActor, FGamepl
 	UWarAbilitySystemComponent* ASC = NativeGetWarASCFromActor(InActor);
 
 	return ASC->HasMatchingGameplayTag(TagToCheck);
+}
+
+bool UWarBlueprintSystemLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn)
+{
+	check(QueryPawn && TargetPawn);
+
+	IGenericTeamAgentInterface* QueryTeamAgent = Cast<IGenericTeamAgentInterface>(QueryPawn->GetController());
+	IGenericTeamAgentInterface* TargetTeamAgent = Cast<IGenericTeamAgentInterface>(TargetPawn->GetController());
+
+	if (QueryTeamAgent && TargetTeamAgent)
+	{
+		return QueryTeamAgent->GetGenericTeamId() != TargetTeamAgent->GetGenericTeamId();
+	}
+
+	return false;
 }
