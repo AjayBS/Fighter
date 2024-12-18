@@ -9,6 +9,13 @@
 
 class UWarAbilitySystemComponent;
 
+UENUM()
+enum class EWarConfirmType : uint8
+{
+	Yes,
+	No
+};
+
 /**
  * 
  */
@@ -38,8 +45,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static void RemoveGameplayFromActorIfFound(AActor* InActor, FGameplayTag TagToRemove);
 
-	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool NativeDoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck);
+
+	UFUNCTION(BlueprintCallable, Category = "Warrior|FunctionLibrary", meta = (DisplayName = "Does Actor Have Tag", ExpandEnumAsExecs = "OutConfirmType"))
+	static void BP_DoesActorHaveTag(AActor* InActor,FGameplayTag TagToCheck, EWarConfirmType& OutConfirmType);
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn);

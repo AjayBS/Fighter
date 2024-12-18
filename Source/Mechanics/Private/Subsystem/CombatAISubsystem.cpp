@@ -25,7 +25,7 @@ void UCombatAISubsystem::AddGradingAndUpdateWidget(AWarEnemy* Enemy)
 	float Grading = SetScoreBasedOnDirection(Enemy);
 	EnemyGrading.Add(Enemy, Grading);
 
-	AMechanicsGameMode* GameMode = Cast<AMechanicsGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	/*AMechanicsGameMode* GameMode = Cast<AMechanicsGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	if (UDebugMeleeWidget* MeleeUI = CreateWidget<UDebugMeleeWidget>(GetWorld(), GameMode->DebugMeleeWidget))
 	{
@@ -33,7 +33,7 @@ void UCombatAISubsystem::AddGradingAndUpdateWidget(AWarEnemy* Enemy)
 		MeleeUI->FightingGrade = Grading;
 
 		Enemy->DebugWidgetComponent->SetWidget(MeleeUI);
-	}
+	}*/
 }
 
 float UCombatAISubsystem::SetScoreBasedOnDirection(AWarEnemy* Enemy)
@@ -57,7 +57,7 @@ void UCombatAISubsystem::ResetGradingValues()
 	for (auto& Pair : EnemyGrading)
 	{
 		Pair.Value = FMath::RandRange(0.0f, 5.0f);
-		AWarEnemy* Enemy = Cast<AWarEnemy>(Pair.Key);
+		/*AWarEnemy* Enemy = Cast<AWarEnemy>(Pair.Key);
 
 		if (Enemy != nullptr)
 		{
@@ -65,6 +65,6 @@ void UCombatAISubsystem::ResetGradingValues()
 			{
 				MeleeUI->FightingGrade = Pair.Value;
 			}
-		}		
+		}	*/
 	}
 }

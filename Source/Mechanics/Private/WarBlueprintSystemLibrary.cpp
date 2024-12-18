@@ -118,6 +118,11 @@ bool UWarBlueprintSystemLibrary::NativeDoesActorHaveTag(AActor* InActor, FGamepl
 	return ASC->HasMatchingGameplayTag(TagToCheck);
 }
 
+void UWarBlueprintSystemLibrary::BP_DoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck, EWarConfirmType& OutConfirmType)
+{
+	OutConfirmType = NativeDoesActorHaveTag(InActor, TagToCheck) ? EWarConfirmType::Yes : EWarConfirmType::No;
+}
+
 bool UWarBlueprintSystemLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn)
 {
 	check(QueryPawn && TargetPawn);

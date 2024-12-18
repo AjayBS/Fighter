@@ -36,6 +36,7 @@ public:
 	TArray<FGameplayTag> DamageTypes;
 
 	FGameplayTag Enemy_Status_Strafing;
+	FGameplayTag Enemy_Status_UnderAttack;
 
 protected:
 
