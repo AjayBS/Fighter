@@ -21,6 +21,7 @@ public:
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_1;
+	FGameplayTag InputTag_Target;
 
 	FGameplayTag Damage;
 	FGameplayTag Damage_Punch;

@@ -13,7 +13,7 @@
 #include "Character/CharacterClassInfo.h"
 #include "GameplayEffectTypes.h"
 #include "Engine/OverlapResult.h"
-#include "Player/WarPlayerController.h"
+#include "Kismet/KismetMathLibrary.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarBlueprintLibrary, Warning, All);
 
@@ -140,4 +140,17 @@ bool UWarBlueprintSystemLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* Ta
 	}
 
 	return false;
+}
+
+FGameplayTag UWarBlueprintSystemLibrary::ComputeHitReactDirectionTag(AActor* InAttacker, AActor* InVictim, float& OutAngleDifference)
+{
+	check(InAttacker && InVictim);
+
+	const FVector VictimForward = InVictim->GetActorForwardVector();
+	const FVector VictimToAttackerNormalized = (InAttacker->GetActorLocation() - InVictim->GetActorLocation().GetSafeNormal());
+
+	const float DotResult = FVector::DotProduct(VictimForward, VictimToAttackerNormalized);
+	OutAngleDifference = UKismetMathLibrary::DegAcos(DotResult);
+
+	return FGameplayTag();
 }

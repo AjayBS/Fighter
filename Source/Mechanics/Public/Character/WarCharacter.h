@@ -18,13 +18,6 @@ class MECHANICS_API AWarCharacter : public AWarCharacterBase
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* CameraBoom;
-
-	/** Follow camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* FollowCamera;
-
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	// Begin ICombat interface
@@ -51,10 +44,4 @@ public:
 
 	 virtual int32 GetPlayerLevel() override;
 	 virtual bool IsAI_Implementation() const override { return false; }
-
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
-	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	
 };
