@@ -65,24 +65,19 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FString("Weapon.")
 		);
 
-	GameplayTags.Montage_Attack_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Montage.Attack.RightHand"),
-		FString("Right Hand.")
+	GameplayTags.Montage_Attack_ComboLight1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.ComboLight1"),
+		FString("Right Hand Light Punch.")
 	);
 
-	GameplayTags.Montage_Attack_LeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Montage.Attack.LeftHand"),
+	GameplayTags.Montage_Attack_ComboLight2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.ComboLight2"),
+		FString("Combo of Right Leg Light kick.")
+	);
+
+	GameplayTags.Montage_Attack_Heavy = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.Heavy"),
 		FString("LeftHand.")
-	);
-
-	GameplayTags.Montage_Attack_LeftLeg = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Montage.Attack.LeftLeg"),
-		FString("LeftLeg.")
-	);
-
-	GameplayTags.Montage_Attack_RightLeg = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Montage.Attack.RightLeg"),
-		FString("RightLeg.")
 	);
 
 	/**

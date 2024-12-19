@@ -67,18 +67,13 @@ AActor* AWarCharacterBase::GetCombatTarget_Implementation() const
 FVector AWarCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) const
 {
 	const FWarGameplayTags& GameplayTags = FWarGameplayTags::Get();
-	// TO-DO Add IsValid(Weapon) check here.
-	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon))
+	
+	for (int32 i = 0; i < AttackMontages.Num(); i++)
 	{
-		return GetMesh()->GetSocketLocation(WeaponTipSocketName);
-	}
-	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
-	{
-		return GetMesh()->GetSocketLocation(LeftHandSocketName);
-	}
-	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
-	{
-		return GetMesh()->GetSocketLocation(RightHandSocketName);
+		if (MontageTag.MatchesTagExact(AttackMontages[i].MontageTag))
+		{
+			return GetMesh()->GetSocketLocation(AttackMontages[i].SocketName);
+		}
 	}
 
 	return FVector();

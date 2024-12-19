@@ -66,14 +66,6 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	FName WeaponTipSocketName;
-
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	FName LeftHandSocketName;
-
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	FName RightHandSocketName;
 private:
 	
 	UPROPERTY(EditAnywhere, Category = "Abilities")

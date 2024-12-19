@@ -28,10 +28,9 @@ public:
 	FGameplayTag Ability_Attack;
 
 	FGameplayTag Montage_Attack_Weapon;
-	FGameplayTag Montage_Attack_RightHand;
-	FGameplayTag Montage_Attack_LeftHand;
-	FGameplayTag Montage_Attack_RightLeg;
-	FGameplayTag Montage_Attack_LeftLeg;
+	FGameplayTag Montage_Attack_ComboLight1;
+	FGameplayTag Montage_Attack_ComboLight2;
+	FGameplayTag Montage_Attack_Heavy;
 
 	FGameplayTag Effects_HitReact;
 
