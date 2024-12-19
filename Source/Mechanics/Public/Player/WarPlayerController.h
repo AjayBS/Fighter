@@ -25,6 +25,9 @@ class MECHANICS_API AWarPlayerController : public APlayerController, public IGen
 public:
 	AWarPlayerController();
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_UpdateTargetingData(FVector2D Axis);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

@@ -73,7 +73,9 @@ void AWarPlayerController::Look(const FInputActionValue& Value)
 	{
 		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
 		ControlledPawn->AddControllerPitchInput(LookAxisVector.Y);
-	}	
+	}
+
+	BP_UpdateTargetingData(LookAxisVector);
 }
 
 void AWarPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
