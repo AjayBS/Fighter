@@ -3,6 +3,7 @@
 
 #include "Character/WarCharacter.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Player/WarPlayerState.h"
@@ -47,7 +48,7 @@ void AWarCharacter::BeginPlay()
 void AWarCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
-	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0 : BaseWalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0 : BaseWalkSpeed;	
 }
 
 void AWarCharacter::BindToEvents()
@@ -79,6 +80,15 @@ AWarCharacter::AWarCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
 	FollowCamera->bUsePawnControlRotation = false;
+}
+
+void AWarCharacter::SetHitPauseEvent_Implementation()
+{
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		FWarGameplayTags::Get().Player_Effects_HitPause,
+		FGameplayEventData()
+	);
 }
 
 int32 AWarCharacter::GetPlayerLevel()

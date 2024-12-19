@@ -56,6 +56,11 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FString("Hit react effects.")
 	);
 
+	GameplayTags.Player_Effects_HitPause = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Effects.HitPause"),
+		FString("Hit pause effects.")
+	); 
+
 	/**
 	 * Montage
 	 */

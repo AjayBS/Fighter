@@ -33,6 +33,7 @@ public:
 	FGameplayTag Montage_Attack_Heavy;
 
 	FGameplayTag Effects_HitReact;
+	FGameplayTag Player_Effects_HitPause;
 
 	TArray<FGameplayTag> DamageTypes;
 

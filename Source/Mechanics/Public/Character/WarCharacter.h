@@ -27,6 +27,10 @@ private:
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
+	// Begin ICombat interface
+	virtual void SetHitPauseEvent_Implementation() override;
+	// End ICombat interface
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
