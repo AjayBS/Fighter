@@ -7,6 +7,7 @@
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Input/WarInputComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarPlayerController, Error, All);
 
@@ -31,11 +32,12 @@ void AWarPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UWarInputComponent* AuraInputComponent = CastChecked<UWarInputComponent>(InputComponent);
-	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AWarPlayerController::Move);
-	AuraInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AWarPlayerController::Look);
+	UWarInputComponent* WarInputComponent = CastChecked<UWarInputComponent>(InputComponent);
+	WarInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AWarPlayerController::Move);
+	WarInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AWarPlayerController::Look);
+	WarInputComponent->BindAction(SpaceWalkAction, ETriggerEvent::Triggered, this, &AWarPlayerController::SpaceWalk);
 
-	AuraInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+	WarInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 FGenericTeamId AWarPlayerController::GetGenericTeamId() const
@@ -76,6 +78,18 @@ void AWarPlayerController::Look(const FInputActionValue& Value)
 	}
 
 	BP_UpdateTargetingData(LookAxisVector);
+}
+
+void AWarPlayerController::SpaceWalk(const FInputActionValue& Value)
+{
+	float ActionValue = Value.Get<float>();
+
+	APawn* ControlledPawn = GetPawn<APawn>();
+	if (ControlledPawn)
+	{
+		FVector ForwardVector = UKismetMathLibrary::GetForwardVector(ControlledPawn->GetControlRotation()) * 0.001f;
+		ControlledPawn->AddMovementInput(FVector(ForwardVector.X, ForwardVector.Y, ActionValue), FMath::Abs(ActionValue));
+	}
 }
 
 void AWarPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)

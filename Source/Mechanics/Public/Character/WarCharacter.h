@@ -41,7 +41,6 @@ public:
 	/**
 	 * Combat interface
 	 */
-
 	 virtual int32 GetPlayerLevel() override;
 	 virtual bool IsAI_Implementation() const override { return false; }
 };
