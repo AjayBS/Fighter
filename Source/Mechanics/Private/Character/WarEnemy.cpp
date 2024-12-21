@@ -57,6 +57,10 @@ void AWarEnemy::Destroyed()
 	{
 		LevelSubsystem->EnemyDefeated();
 	}
+	else
+	{
+		UE_LOG(LogWarEnemyCharacter, Error, TEXT("Failed to get a level subsytem in %s"), *GetName());
+	}
 }
 
 int32 AWarEnemy::GetPlayerLevel()
