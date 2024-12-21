@@ -3,6 +3,7 @@
 
 #include "Character/WarEnemy.h"
 
+#include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "AbilitySystem/WarAttributeSet.h"
 #include "AI/WarAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -10,6 +11,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Subsystem/CombatAISubsystem.h"
+#include "Subsystem/LevelSubsystem.h"
 #include "UI/Widget/WarUserWidget.h"
 #include "WarBlueprintSystemLibrary.h"
 #include "WarGameplayTags.h"
@@ -50,6 +52,11 @@ void AWarEnemy::Destroyed()
 	{
 		CombatAISubsystem->EnemyList.Remove(this);
 	}
+
+	if (ULevelSubsystem* LevelSubsystem = ULevelSubsystem::Get(GetWorld()))
+	{
+		LevelSubsystem->EnemyDefeated();
+	}
 }
 
 int32 AWarEnemy::GetPlayerLevel()
@@ -89,8 +96,8 @@ void AWarEnemy::BeginPlay()
 	SetWidgetController();
 	SetInitialValuesForWidget();
 
-	UWarBlueprintSystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
-	UWarBlueprintSystemLibrary::InitializeDefaultAttributes(this, AbilitySystemComponent, CharacterClass, Level);
+	UWarBlueprintSystemLibrary::GiveStartupAbilities(this, Cast<UAbilitySystemComponent>(AbilitySystemComponent), CharacterClass);
+	UWarBlueprintSystemLibrary::InitializeDefaultAttributes(this, Cast<UAbilitySystemComponent>(AbilitySystemComponent), CharacterClass, Level);
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 
 	if (UCombatAISubsystem* CombatAISubsystem = UCombatAISubsystem::Get(GetWorld()))
