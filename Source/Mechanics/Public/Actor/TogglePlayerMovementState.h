@@ -30,6 +30,9 @@ public:
     void AddInputMapping(ACharacter* Character);
     void RemoveInputMapping(ACharacter* Character);
 
+    UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_OperationsOnOverlap(bool bIsInterior);
+
 	 // Box Component
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<UBoxComponent> BoxComponent;

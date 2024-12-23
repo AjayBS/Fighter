@@ -37,13 +37,15 @@ void ATogglePlayerMovementState::OnBoxOverlap(UPrimitiveComponent* OverlappedCom
             if (bShouldFly)
             {
                 Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
-                AddInputMapping(Character);
+                AddInputMapping(Character);                
             }
             else
             {
                 Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
                 RemoveInputMapping(Character);
             }
+
+            BP_OperationsOnOverlap(bShouldFly);
         }
         else
         {
