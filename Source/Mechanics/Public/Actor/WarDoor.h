@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "WarDoor.generated.h"
 
+class ACharacter;
+class UInputMappingContext;
+
 UCLASS()
 class MECHANICS_API AWarDoor : public AActor
 {
@@ -16,6 +19,18 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bUnlockDoor = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bShouldFlyAfterTeleport = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputMappingContext* MappingContext;
+
+	UFUNCTION(BlueprintCallable)
+	void AfterTeleportOperation(ACharacter* Character);
+
+	void AddInputMapping(ACharacter* Character);
+	void RemoveInputMapping(ACharacter* Character);
 
 	UFUNCTION()
 	void DoorOperation(bool bInUnlock);
