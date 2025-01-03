@@ -23,10 +23,16 @@ public:
 	FGameplayTag InputTag_1;
 	FGameplayTag InputTag_Target;
 
+	FGameplayTag InputTag_MustBeHeld;
+	FGameplayTag InputTag_MustBeHeld_Block;
+
 	FGameplayTag Damage;
 	FGameplayTag Damage_Punch;
 
 	FGameplayTag Ability_Attack;
+	FGameplayTag Ability_Block;
+
+	FGameplayTag Ability_Status_Block;
 
 	FGameplayTag Montage_Attack_Weapon;
 	FGameplayTag Montage_Attack_ComboLight1;

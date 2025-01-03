@@ -20,7 +20,7 @@ void UWarAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<
 	}
 }
 
-void UWarAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+void UWarAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid())
 	{
@@ -38,7 +38,12 @@ void UWarAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTa
 				TryActivateAbility(AbilitySpec.Handle);
 			}
 		}
-	}	
+	}
+}
+
+void UWarAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	
 }
 
 void UWarAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
@@ -47,14 +52,19 @@ void UWarAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& Inp
 	{
 		UE_LOG(LogWarAbilitySystemComponent, Warning, TEXT("InputTag is invalid for character %s"), *GetOwnerActor()->GetName());
 		return;
-	}
+	}	
 
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputReleased(AbilitySpec);
-		}
+
+			if (InputTag.MatchesTag(FWarGameplayTags::Get().InputTag_MustBeHeld))
+			{
+				CancelAbilityHandle(AbilitySpec.Handle);
+			}
+		}		
 	}
 }
 

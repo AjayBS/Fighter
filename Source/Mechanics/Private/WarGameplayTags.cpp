@@ -32,6 +32,15 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FString("Input tag for 1 key.")
 	);
 
+	GameplayTags.InputTag_MustBeHeld = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.MustBeHeld"),
+		FString("Input tag for holding.")
+	);
+
+	GameplayTags.InputTag_MustBeHeld_Block = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.MustBeHeld.Block"),
+		FString("Input tag held which blocks an attack.")
+	);
 
 	GameplayTags.InputTag_Target = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.Target"),
@@ -46,6 +55,16 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Ability_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Attack"),
 		FString("Attack ability tag.")
+	);
+
+	GameplayTags.Ability_Block = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Block"),
+		FString("Block ability tag.")
+	);
+
+	GameplayTags.Ability_Status_Block = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Block"),
+		FString("Block status.")
 	);
 
 	GameplayTags.Damage_Punch = UGameplayTagsManager::Get().AddNativeGameplayTag(

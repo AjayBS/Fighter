@@ -94,7 +94,13 @@ void AWarPlayerController::SpaceWalk(const FInputActionValue& Value)
 
 void AWarPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	if (GetASC() == nullptr)
+	{
+		UE_LOG(LogWarPlayerController, Error, TEXT("AbilitySystemComponent is null in player controller"));
+		return;
+	}
+
+	GetASC()->AbilityInputTagPressed(InputTag);
 }
 
 void AWarPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
