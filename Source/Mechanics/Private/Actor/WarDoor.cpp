@@ -19,6 +19,7 @@ void AWarDoor::AfterTeleportOperation(ACharacter* Character)
 	if (Character == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Please pass in a character to do after teleport operations."));
+		return;
 	}
 
 	if (bShouldFlyAfterTeleport)

@@ -20,7 +20,10 @@ void AWarCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AWarPlayerState* WarPlayerState = GetPlayerState<AWarPlayerState>();
-	check(WarPlayerState);
+	if (WarPlayerState == nullptr)
+	{
+		return;
+	}
 
 	AWarPlayerController* WarPlayerController = Cast<AWarPlayerController>(GetController());
 	if (WarPlayerController)
