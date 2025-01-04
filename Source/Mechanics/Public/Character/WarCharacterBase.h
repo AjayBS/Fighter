@@ -36,6 +36,7 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual bool CheckAndHandleBlock_Implementation(AActor* TargetActor) override;
 	virtual void Die() override;
 
 

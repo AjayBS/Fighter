@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "MotionWarpingComponent.h"
+#include "WarBlueprintSystemLibrary.h"
 #include "WarGameplayTags.h"
 
 AWarCharacterBase::AWarCharacterBase()
@@ -98,6 +99,18 @@ TArray<FTaggedMontage> AWarCharacterBase::GetAttackMontages_Implementation()
 UAnimMontage* AWarCharacterBase::GetHitReactMontage_Implementation()
 {
 	return HitReactMontage;
+}
+
+bool AWarCharacterBase::CheckAndHandleBlock_Implementation(AActor* TargetActor)
+{
+	bool bIsValidBlock = false;
+	const bool bIsPlayerBlocking = UWarBlueprintSystemLibrary::NativeDoesActorHaveTag(TargetActor, FWarGameplayTags::Get().Ability_Status_Block);
+	if (bIsPlayerBlocking)
+	{
+		bIsValidBlock = UWarBlueprintSystemLibrary::IsValidBlock(this, TargetActor);
+	}
+	
+	return bIsValidBlock;
 }
 
 void AWarCharacterBase::Die()

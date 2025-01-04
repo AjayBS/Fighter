@@ -65,7 +65,10 @@ public:
 	UAnimMontage* GetHitReactMontage();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void SetHitPauseEvent();	
+	void SetHitPauseEvent();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool CheckAndHandleBlock(AActor* TargetActor);
 
 	virtual void Die() = 0;
 };

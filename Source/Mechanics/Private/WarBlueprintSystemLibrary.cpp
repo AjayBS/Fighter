@@ -3,17 +3,18 @@
 
 #include "WarBlueprintSystemLibrary.h"
 
+#include "AbilitySystemComponent.h"
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
-#include "Player/WarPlayerController.h"
-#include "Mechanics/MechanicsGameMode.h"
-#include "AbilitySystemComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Interfaces/CombatInterface.h"
 #include "Character/CharacterClassInfo.h"
-#include "GameplayEffectTypes.h"
+#include "Debug/WarDebugHelper.h"
 #include "Engine/OverlapResult.h"
+#include "GameplayEffectTypes.h"
+#include "Interfaces/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Mechanics/MechanicsGameMode.h"
+#include "Player/WarPlayerController.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarBlueprintLibrary, Warning, All);
 
@@ -153,4 +154,15 @@ FGameplayTag UWarBlueprintSystemLibrary::ComputeHitReactDirectionTag(AActor* InA
 	OutAngleDifference = UKismetMathLibrary::DegAcos(DotResult);
 
 	return FGameplayTag();
+}
+
+bool UWarBlueprintSystemLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
+{
+	check(InAttacker && InDefender);
+
+	const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
+	const FString DebugString = FString::Printf(TEXT("Dot Result: %f %s"), DotResult, DotResult < 0.f ? TEXT("Valid block") : TEXT("Invalid block"));
+	
+	Debug::Print(DebugString, DotResult < 0.f ? FColor::Green : FColor::Red);
+	return DotResult < 0.f;
 }
