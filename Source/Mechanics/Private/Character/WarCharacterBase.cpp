@@ -3,6 +3,7 @@
 
 #include "Character/WarCharacterBase.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/WarAbilitySystemComponent.h"
 #include "AbilitySystem/WarAttributeSet.h"
 #include "Components/CapsuleComponent.h"
@@ -108,6 +109,18 @@ bool AWarCharacterBase::CheckAndHandleBlock_Implementation(AActor* TargetActor)
 	if (bIsPlayerBlocking)
 	{
 		bIsValidBlock = UWarBlueprintSystemLibrary::IsValidBlock(this, TargetActor);
+		if (bIsValidBlock)
+		{
+			FGameplayEventData EventData;
+			EventData.Instigator = this;
+			EventData.Target = TargetActor;
+
+			UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+				TargetActor,
+				FWarGameplayTags::Get().Player_Event_SuccessfulBlock,
+				EventData
+			);
+		}
 	}
 	
 	return bIsValidBlock;

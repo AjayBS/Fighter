@@ -49,6 +49,8 @@ public:
 
 	FGameplayTag Shared_Status_Dead;
 
+	FGameplayTag Player_Event_SuccessfulBlock;
+
 protected:
 
 private:

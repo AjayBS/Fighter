@@ -128,4 +128,9 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FName("Shared.Status.Dead"),
 		FString("Dead.")
 	);
+	
+	GameplayTags.Player_Event_SuccessfulBlock = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Player.Event.SuccessfulBlock"),
+			FString("Event for a successful block.")
+	);
 }

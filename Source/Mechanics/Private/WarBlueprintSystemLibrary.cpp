@@ -161,8 +161,5 @@ bool UWarBlueprintSystemLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefe
 	check(InAttacker && InDefender);
 
 	const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
-	const FString DebugString = FString::Printf(TEXT("Dot Result: %f %s"), DotResult, DotResult < 0.f ? TEXT("Valid block") : TEXT("Invalid block"));
-	
-	Debug::Print(DebugString, DotResult < 0.f ? FColor::Green : FColor::Red);
 	return DotResult < 0.f;
 }
