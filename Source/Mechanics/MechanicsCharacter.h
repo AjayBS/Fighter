@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "Character/WarCharacterBase.h"
 #include "MechanicsCharacter.generated.h"
 
 class USpringArmComponent;
@@ -16,7 +16,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class AMechanicsCharacter : public ACharacter
+class AMechanicsCharacter : public AWarCharacterBase
 {
 	GENERATED_BODY()
 
