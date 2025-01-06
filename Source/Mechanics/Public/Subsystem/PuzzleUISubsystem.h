@@ -44,7 +44,7 @@ struct FTileInfo
 
 };
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleCompleted, UWarUserWidget*, UserWidget);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FPuzzleOperation, int32, Row, int32, Column, bool, bSelected);
 
 class UWarUserWidget;
@@ -63,7 +63,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OpenPuzzleWidget(TSubclassOf<UWarUserWidget> UserWidgetClass);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintCallable)
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FPuzzleOperation TileActivated;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FPuzzleCompleted PuzzleCompleted;
 	
 };

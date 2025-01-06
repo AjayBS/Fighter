@@ -63,6 +63,16 @@ void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column, bool bSelect
 {
 	if (HandleSelectedTileOperation(bSelected))
 	{
+		CurrentLinesSolved++;
+		if (CheckIfAllPuzzlesAreSolved())
+		{
+			// Puzzle solved here. Do operations after puzzle is solved.
+			if (UPuzzleUISubsystem* PuzzleSubsystem = UPuzzleUISubsystem::Get(GetWorld()))
+			{
+				PuzzleSubsystem->PuzzleCompleted.Broadcast(this);
+			}
+			RemoveFromParent();
+		}
 		return;
 	}
 
@@ -147,4 +157,9 @@ bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected)
 	}
 
 	return false;
+}
+
+bool UWarPuzzleParentWidget::CheckIfAllPuzzlesAreSolved()
+{
+	return CurrentLinesSolved == (InitialTileInfo.Num() / 2);
 }

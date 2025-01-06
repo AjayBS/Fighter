@@ -31,12 +31,15 @@ public:
 	EColorCodes GetCurrentActiveArraysColor(int32 Row, int32 Column);
 
 	bool HandleSelectedTileOperation(bool bSelected);
+	bool CheckIfAllPuzzlesAreSolved();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UI)
 	int32 Rows;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UI)
 	int32 Columns;
+
+	int32 CurrentLinesSolved = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UGridPanel> MainGridPanel;
