@@ -59,8 +59,13 @@ void UWarPuzzleParentWidget::CreateGrid()
 	}
 }
 
-void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column)
+void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column, bool bSelected)
 {
+	if (HandleSelectedTileOperation(bSelected))
+	{
+		return;
+	}
+
 	if (!CheckIfTileIsActivelySet(Row, Column))
 	{
 		// Visually set the active tile.
@@ -70,25 +75,25 @@ void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column)
 			UWarTileWidget* WarTile = Cast<UWarTileWidget>(Widgets[i]);
 			if (WarTile->RowIndex == Row && WarTile->ColumnIndex == Column)
 			{
-				if (!WarTile->IsAssigned)
+				// Search for current active array and assign
+				EColorCodes Color = GetCurrentActiveArraysColor(Row, Column);
+				UE_LOG(LogTemp, Error, TEXT("Color of the widget is %d."), Color);
+				if (Color != EColorCodes::None || WarTile->ColorCode != EColorCodes::None)
 				{
+					if (!WarTile->IsAssigned)
+					{
+						WarTile->BP_UpdateColorValue(Color);
+						CurrentActiveArray.Add(FTileInfo(Color, WarTile->RowIndex, WarTile->ColumnIndex));
+					}
+					else
+					{
+						CurrentActiveArray.Empty();
+						CurrentActiveArray.Add(FTileInfo(WarTile->ColorCode, WarTile->RowIndex, WarTile->ColumnIndex));
+					}
 
-					// Search for current active array and assign
-					EColorCodes Color = GetCurrentActiveArraysColor(Row, Column);
-					UE_LOG(LogTemp, Warning, TEXT("Assigning for row %d column %d color is %d."), Row, Column, Color);
-					WarTile->BP_UpdateColorValue(Color);
-					CurrentActiveArray.Add(FTileInfo(Color, WarTile->RowIndex, WarTile->ColumnIndex));
-					UE_LOG(LogTemp, Warning, TEXT("Not IsAssigned now current active array length is %d."), CurrentActiveArray.Num());
-					break;
+					ActiveTiles.Add(FTileInfo(WarTile->ColorCode, Row, Column));
 				}
-				else
-				{
-					CurrentActiveArray.Empty();
-					CurrentActiveArray.Add(FTileInfo(WarTile->ColorCode, WarTile->RowIndex, WarTile->ColumnIndex));
-					UE_LOG(LogTemp, Warning, TEXT("IsAssigned now current active array length is %d."), CurrentActiveArray.Num());
-				}
-
-				ActiveTiles.Add(FTileInfo(WarTile->ColorCode, Row, Column));
+				break;
 			}			
 		}
 	}
@@ -100,6 +105,7 @@ bool UWarPuzzleParentWidget::CheckIfTileIsActivelySet(int32 Row, int32 Column)
 	{
 		if (ActiveTiles[i].Row == Row && ActiveTiles[i].Column == Column)
 		{
+			UE_LOG(LogTemp, Error, TEXT("Passing an active tile. No action is taken"));
 			return true;
 		}
 	}
@@ -112,25 +118,33 @@ EColorCodes UWarPuzzleParentWidget::GetCurrentActiveArraysColor(int32 Row, int32
 	if (CurrentActiveArray.Num() > 0)
 	{
 		FTileInfo LatestAddedArray = CurrentActiveArray[CurrentActiveArray.Num() - 1];
-		UE_LOG(LogTemp, Warning, TEXT("Latest added array row %d and column %d. Length of array is %d"), LatestAddedArray.Row, LatestAddedArray.Column, CurrentActiveArray.Num());
-		if (LatestAddedArray.Row == Row - 1 && LatestAddedArray.Column == Column)
-		{
-			return LatestAddedArray.Color;
-		}
-		else if (LatestAddedArray.Row == Row + 1 && LatestAddedArray.Column == Column)
-		{
-			return LatestAddedArray.Color;
-		}
-		else if (LatestAddedArray.Row == Row && LatestAddedArray.Column == Column - 1)
-		{
-			return LatestAddedArray.Color;
-		}
-		else if (LatestAddedArray.Row == Row && LatestAddedArray.Column == Column + 1)
+		if ((LatestAddedArray.Row == Row - 1 && LatestAddedArray.Column == Column) ||
+			(LatestAddedArray.Row == Row + 1 && LatestAddedArray.Column == Column) ||
+			(LatestAddedArray.Row == Row && LatestAddedArray.Column == Column - 1) ||
+			(LatestAddedArray.Row == Row && LatestAddedArray.Column == Column + 1)
+			)
 		{
 			return LatestAddedArray.Color;
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Failed to get the adjoining row/column of the latest array."));
-	return EColorCodes();
+	return EColorCodes::None;
+}
+
+bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected)
+{
+	if (bSelected)
+	{
+		if (CurrentActiveArray.IsEmpty())
+		{
+			return false;
+		}
+		else
+		{
+			CurrentActiveArray.Empty();
+			return true;
+		}
+	}
+
+	return false;
 }

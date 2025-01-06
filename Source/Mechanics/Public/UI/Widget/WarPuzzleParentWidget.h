@@ -24,11 +24,13 @@ public:
 	void CreateGrid();
 
 	UFUNCTION(BlueprintCallable)
-	void SetActiveTile(int32 Row, int32 Column);
+	void SetActiveTile(int32 Row, int32 Column, bool bSelected);
 
 	bool CheckIfTileIsActivelySet(int32 Row, int32 Column);
 
 	EColorCodes GetCurrentActiveArraysColor(int32 Row, int32 Column);
+
+	bool HandleSelectedTileOperation(bool bSelected);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UI)
 	int32 Rows;
