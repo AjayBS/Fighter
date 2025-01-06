@@ -4,6 +4,16 @@
 
 #include "UI/Widget/WarUserWidget.h"
 
+UPuzzleUISubsystem* UPuzzleUISubsystem::Get(const UWorld* InWorld)
+{
+	if (InWorld)
+	{
+		return InWorld->GetSubsystem<UPuzzleUISubsystem>();
+	}
+
+	return nullptr;
+}
+
 void UPuzzleUISubsystem::OpenPuzzleWidget(TSubclassOf<UWarUserWidget> UserWidgetClass)
 {
 	if (UserWidgetClass.Get() == nullptr)
