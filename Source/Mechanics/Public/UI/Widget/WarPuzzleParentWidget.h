@@ -33,6 +33,11 @@ public:
 	bool HandleSelectedTileOperation(bool bSelected);
 	bool CheckIfAllPuzzlesAreSolved();
 
+	UFUNCTION()
+	void ClearLine(int32 Row, int32 Column, EColorCodes Color);
+
+	void BuildPath(FTileInfo& CurrentTile, EColorCodes Color, TArray<FTileInfo>& PathTiles);
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UI)
 	int32 Rows;
 
@@ -52,4 +57,7 @@ public:
 
 	TArray<FTileInfo> ActiveTiles;
 	TArray<FTileInfo> CurrentActiveArray;
+private:	
+	bool IsPathComplete(FTileInfo& Src, FTileInfo& Dest);
+	bool IsAdjacent(FTileInfo& Tile1, FTileInfo& Tile2);
 };

@@ -16,6 +16,7 @@ void UWarPuzzleParentWidget::NativePreConstruct()
 	if (UPuzzleUISubsystem* PuzzleSubsystem = UPuzzleUISubsystem::Get(GetWorld()))
 	{
 		PuzzleSubsystem->TileActivated.AddDynamic(this, &UWarPuzzleParentWidget::SetActiveTile);
+		PuzzleSubsystem->ClearLine.AddDynamic(this, &UWarPuzzleParentWidget::ClearLine);
 	}
 }
 
@@ -62,8 +63,7 @@ void UWarPuzzleParentWidget::CreateGrid()
 void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column, bool bSelected)
 {
 	if (HandleSelectedTileOperation(bSelected))
-	{
-		CurrentLinesSolved++;
+	{		
 		if (CheckIfAllPuzzlesAreSolved())
 		{
 			// Puzzle solved here. Do operations after puzzle is solved.
@@ -151,8 +151,29 @@ bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected)
 		}
 		else
 		{
-			CurrentActiveArray.Empty();
-			return true;
+			// Do a DFS search here to make sure all lines are connected.
+			FTileInfo SrcTile, DestTile;
+			for (int32 i = 0; i < InitialTileInfo.Num(); i++)
+			{
+				if (CurrentActiveArray[0].Color == InitialTileInfo[i].Color)
+				{
+					if (SrcTile.Color == EColorCodes::None)
+					{
+						SrcTile = InitialTileInfo[i];
+					}
+					else
+					{
+						DestTile = InitialTileInfo[i];
+					}
+				}
+			}
+
+			if (IsPathComplete(SrcTile, DestTile))
+			{
+				CurrentLinesSolved++;
+				CurrentActiveArray.Empty();
+				return true;
+			}
 		}
 	}
 
@@ -162,4 +183,54 @@ bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected)
 bool UWarPuzzleParentWidget::CheckIfAllPuzzlesAreSolved()
 {
 	return CurrentLinesSolved == (InitialTileInfo.Num() / 2);
+}
+
+void UWarPuzzleParentWidget::ClearLine(int32 Row, int32 Column, EColorCodes Color)
+{
+	if (Color != EColorCodes::None)
+	{
+		TArray<FTileInfo> PathTiles;
+		EColorCodes TargetColor = Color;
+
+		for (int32 i = 0; i < InitialTileInfo.Num(); i++)
+		{
+			if (Color == InitialTileInfo[i].Color)
+			{
+				FTileInfo TileInfo = InitialTileInfo[i];
+
+			}			
+		}
+	}
+}
+
+void UWarPuzzleParentWidget::BuildPath(FTileInfo& CurrentTile, EColorCodes Color, TArray<FTileInfo>& PathTiles)
+{
+}
+
+bool UWarPuzzleParentWidget::IsPathComplete(FTileInfo& Src, FTileInfo& Dest)
+{
+	if (CurrentActiveArray.Num() < 2)
+	{
+		return false;
+	}
+
+	for (int32 i = 0; i < CurrentActiveArray.Num() - 1; ++i)
+	{
+		FTileInfo Tile1 = CurrentActiveArray[i];
+		FTileInfo Tile2 = CurrentActiveArray[i + 1];
+
+		if (!IsAdjacent(Tile1, Tile2))
+		{
+			return false;
+		}
+	}
+
+	return IsAdjacent(CurrentActiveArray.Last(), Dest) || IsAdjacent(CurrentActiveArray.Last(), Src);
+}
+
+bool UWarPuzzleParentWidget::IsAdjacent(FTileInfo& Tile1, FTileInfo& Tile2)
+{
+	int32 RowDiff = FMath::Abs(Tile1.Row - Tile2.Row);
+	int32 ColDiff = FMath::Abs(Tile1.Column - Tile2.Column);
+	return RowDiff + ColDiff == 1;
 }
