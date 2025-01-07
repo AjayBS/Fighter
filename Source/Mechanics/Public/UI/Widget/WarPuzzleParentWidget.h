@@ -8,7 +8,7 @@
 #include "WarPuzzleParentWidget.generated.h"
 
 class UGridPanel;
-
+class UWarTileWidget;
 /**
  * 
  */
@@ -38,6 +38,11 @@ public:
 
 	void BuildPath(FTileInfo& CurrentTile, EColorCodes Color, TArray<FTileInfo>& PathTiles);
 
+	TArray<FTileInfo> GetAdjacentTiles(FTileInfo& CurrentTile);
+	bool IsValidTile(int32 Row, int32 Col) const;
+	FTileInfo GetTileAt(int32 Row, int32 Col) const;
+	UWarTileWidget* GetWidgetAtTile(int32 Row, int32 Col) const;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UI)
 	int32 Rows;
 
@@ -57,7 +62,10 @@ public:
 
 	TArray<FTileInfo> ActiveTiles;
 	TArray<FTileInfo> CurrentActiveArray;
-private:	
+private:
+	TArray<UWarTileWidget*> WarTileWidgets;
+
 	bool IsPathComplete(FTileInfo& Src, FTileInfo& Dest);
 	bool IsAdjacent(FTileInfo& Tile1, FTileInfo& Tile2);
+	void RemoveElementFromActiveTiles(FTileInfo& InTile);
 };

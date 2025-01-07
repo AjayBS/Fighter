@@ -13,6 +13,13 @@ void UWarPuzzleParentWidget::NativePreConstruct()
 
 	CreateGrid();
 
+	TArray<UWidget*> Widgets = MainGridPanel->GetAllChildren();
+	for (int32 i = 0; i < Widgets.Num(); i++)
+	{
+		UWarTileWidget* WarTile = Cast<UWarTileWidget>(Widgets[i]);
+		WarTileWidgets.Add(WarTile);
+	}
+
 	if (UPuzzleUISubsystem* PuzzleSubsystem = UPuzzleUISubsystem::Get(GetWorld()))
 	{
 		PuzzleSubsystem->TileActivated.AddDynamic(this, &UWarPuzzleParentWidget::SetActiveTile);
@@ -79,10 +86,9 @@ void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column, bool bSelect
 	if (!CheckIfTileIsActivelySet(Row, Column))
 	{
 		// Visually set the active tile.
-		TArray<UWidget*> Widgets = MainGridPanel->GetAllChildren();
-		for (int32 i = 0; i < Widgets.Num(); i++)
+		for (int32 i = 0; i < WarTileWidgets.Num(); i++)
 		{
-			UWarTileWidget* WarTile = Cast<UWarTileWidget>(Widgets[i]);
+			UWarTileWidget* WarTile = WarTileWidgets[i];
 			if (WarTile->RowIndex == Row && WarTile->ColumnIndex == Column)
 			{
 				// Search for current active array and assign
@@ -197,14 +203,105 @@ void UWarPuzzleParentWidget::ClearLine(int32 Row, int32 Column, EColorCodes Colo
 			if (Color == InitialTileInfo[i].Color)
 			{
 				FTileInfo TileInfo = InitialTileInfo[i];
-
+				BuildPath(TileInfo, Color, PathTiles);
 			}			
+		}
+
+		for (FTileInfo& TileInPath : PathTiles)
+		{
+			UWarTileWidget* Widget = GetWidgetAtTile(TileInPath.Row, TileInPath.Column);
+			if (!Widget->IsAssigned)
+			{
+				Widget->BP_UpdateColorValue(EColorCodes::None);
+			}
+
+			RemoveElementFromActiveTiles(TileInPath);
+		}
+
+		// Clear empty active array
+		if (CurrentActiveArray.Num() > 0)
+		{
+			if (CurrentActiveArray[0].Color == Color)
+			{
+				CurrentActiveArray.Empty();
+			}
 		}
 	}
 }
 
 void UWarPuzzleParentWidget::BuildPath(FTileInfo& CurrentTile, EColorCodes Color, TArray<FTileInfo>& PathTiles)
 {
+	if (PathTiles.Contains(CurrentTile)) return;
+
+	if (CurrentTile.Color != Color) return;
+
+	PathTiles.Add(CurrentTile);
+
+	TArray<FTileInfo> Neighbors = GetAdjacentTiles(CurrentTile);
+
+	for (FTileInfo& Neighbor : Neighbors)
+	{
+		BuildPath(Neighbor, Color, PathTiles);
+	}
+}
+
+TArray<FTileInfo> UWarPuzzleParentWidget::GetAdjacentTiles(FTileInfo& CurrentTile)
+{
+	TArray<FTileInfo> AdjacentTiles;
+
+	if (CurrentTile.Color == EColorCodes::None) return AdjacentTiles;
+
+	int32 Row = CurrentTile.Row;
+	int32 Col = CurrentTile.Column;
+
+	TArray<FIntPoint> Offsets = {
+		FIntPoint(-1, 0),
+		FIntPoint(1, 0),
+		FIntPoint(0, -1),
+		FIntPoint(0, 1)
+	};
+
+	for (const FIntPoint& Offset : Offsets)
+	{
+		int32 NeighborRow = Row + Offset.X;
+		int32 NeighborCol = Col + Offset.Y;
+		if (IsValidTile(NeighborRow, NeighborCol)) {
+			FTileInfo NeighborTile = GetTileAt(NeighborRow, NeighborCol);
+			AdjacentTiles.Add(NeighborTile);
+		}
+	}
+
+	return AdjacentTiles;
+}
+
+bool UWarPuzzleParentWidget::IsValidTile(int32 Row, int32 Col) const
+{
+	return Row >= 0 && Row < Rows && Col >= 0 && Col < Columns;
+}
+
+FTileInfo UWarPuzzleParentWidget::GetTileAt(int32 Row, int32 Col) const
+{
+	for (int32 i = 0; i < WarTileWidgets.Num(); i++)
+	{
+		if (Row == WarTileWidgets[i]->RowIndex && Col == WarTileWidgets[i]->ColumnIndex)
+		{
+			return FTileInfo(WarTileWidgets[i]->ColorCode, Row, Col);
+		}
+	}
+	return FTileInfo();
+}
+
+UWarTileWidget* UWarPuzzleParentWidget::GetWidgetAtTile(int32 Row, int32 Col) const
+{
+	for (int32 i = 0; i < WarTileWidgets.Num(); i++)
+	{
+		if (Row == WarTileWidgets[i]->RowIndex && Col == WarTileWidgets[i]->ColumnIndex)
+		{
+			return WarTileWidgets[i];
+		}
+	}
+
+	return nullptr;
 }
 
 bool UWarPuzzleParentWidget::IsPathComplete(FTileInfo& Src, FTileInfo& Dest)
@@ -233,4 +330,17 @@ bool UWarPuzzleParentWidget::IsAdjacent(FTileInfo& Tile1, FTileInfo& Tile2)
 	int32 RowDiff = FMath::Abs(Tile1.Row - Tile2.Row);
 	int32 ColDiff = FMath::Abs(Tile1.Column - Tile2.Column);
 	return RowDiff + ColDiff == 1;
+}
+
+void UWarPuzzleParentWidget::RemoveElementFromActiveTiles(FTileInfo& InTile)
+{
+	for (int32 i = ActiveTiles.Num() - 1; i >= 0; --i)
+	{
+		if (InTile.Row == ActiveTiles[i].Row
+			&& InTile.Column == ActiveTiles[i].Column
+			&& InTile.Color == ActiveTiles[i].Color)
+		{
+			ActiveTiles.RemoveAt(i);
+		}
+	}
 }
