@@ -62,10 +62,13 @@ public:
 
 	TArray<FTileInfo> ActiveTiles;
 	TArray<FTileInfo> CurrentActiveArray;
+	TArray<TArray<FTileInfo>> SolvedTileArray;
+
 private:
 	TArray<UWarTileWidget*> WarTileWidgets;
 
 	bool IsPathComplete(FTileInfo& Src, FTileInfo& Dest);
 	bool IsAdjacent(FTileInfo& Tile1, FTileInfo& Tile2);
 	void RemoveElementFromActiveTiles(FTileInfo& InTile);
+	void RemoveElementFromSolvedTileArray(EColorCodes Color);
 };

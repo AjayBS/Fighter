@@ -93,7 +93,7 @@ void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column, bool bSelect
 			{
 				// Search for current active array and assign
 				EColorCodes Color = GetCurrentActiveArraysColor(Row, Column);
-				UE_LOG(LogTemp, Error, TEXT("Color of the widget is %d."), Color);
+				UE_LOG(LogTemp, Verbose, TEXT("Color of the widget is %d."), Color);
 				if (Color != EColorCodes::None || WarTile->ColorCode != EColorCodes::None)
 				{
 					if (!WarTile->IsAssigned)
@@ -121,7 +121,7 @@ bool UWarPuzzleParentWidget::CheckIfTileIsActivelySet(int32 Row, int32 Column)
 	{
 		if (ActiveTiles[i].Row == Row && ActiveTiles[i].Column == Column)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Passing an active tile. No action is taken"));
+			UE_LOG(LogTemp, Verbose, TEXT("Passing an active tile. No action is taken"));
 			return true;
 		}
 	}
@@ -177,6 +177,8 @@ bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected)
 			if (IsPathComplete(SrcTile, DestTile))
 			{
 				CurrentLinesSolved++;
+				UE_LOG(LogTemp, Verbose, TEXT("Puzzle solved here. Number of lines increased to %d"), CurrentLinesSolved);
+				SolvedTileArray.Add(CurrentActiveArray);
 				CurrentActiveArray.Empty();
 				return true;
 			}
@@ -225,6 +227,10 @@ void UWarPuzzleParentWidget::ClearLine(int32 Row, int32 Column, EColorCodes Colo
 			{
 				CurrentActiveArray.Empty();
 			}
+		}
+		else
+		{
+			RemoveElementFromSolvedTileArray(Color);
 		}
 	}
 }
@@ -341,6 +347,23 @@ void UWarPuzzleParentWidget::RemoveElementFromActiveTiles(FTileInfo& InTile)
 			&& InTile.Color == ActiveTiles[i].Color)
 		{
 			ActiveTiles.RemoveAt(i);
+		}
+	}
+}
+
+void UWarPuzzleParentWidget::RemoveElementFromSolvedTileArray(EColorCodes Color)
+{
+	for (int32 i = SolvedTileArray.Num() - 1; i >= 0; --i)
+	{
+		for (int32 j = SolvedTileArray[i].Num() - 1; j >= 0; --j)
+		{
+			if (Color == SolvedTileArray[i][j].Color)
+			{
+				SolvedTileArray.RemoveAt(i);
+				CurrentLinesSolved--;
+				UE_LOG(LogTemp, Verbose, TEXT("Puzzle solved here. Number of lines decreased to %d"), CurrentLinesSolved);
+				break;
+			}
 		}
 	}
 }
