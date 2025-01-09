@@ -12,6 +12,9 @@ class MECHANICS_API AWarFlyingAI : public ACharacter
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UStaticMeshComponent> PerceptionPoint;
+
 	AWarFlyingAI();
 
 };
