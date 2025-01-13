@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/WarCharacterBase.h"
+#include "Interfaces/PlayerInterface.h"
 #include "WarCharacter.generated.h"
 
 class USpringArmComponent;
@@ -13,7 +14,7 @@ class UCameraComponent;
  * 
  */
 UCLASS()
-class MECHANICS_API AWarCharacter : public AWarCharacterBase
+class MECHANICS_API AWarCharacter : public AWarCharacterBase, public IPlayerInterface
 {
 	GENERATED_BODY()
 

@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class MECHANICS_API UFindPlayer_BTTask : public UBTTaskNode
 {
 	GENERATED_BODY()
@@ -21,4 +21,11 @@ public:
 	FBlackboardKeySelector PlayerKey;
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Search", meta = (AllowProtectedAccess = "true"))
+	bool SearchRandom = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Search", meta = (AllowProtectedAccess = "true"))
+	float SearchRadius = false;
 };

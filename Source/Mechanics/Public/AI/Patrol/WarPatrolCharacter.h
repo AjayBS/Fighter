@@ -6,9 +6,10 @@
 #include "GameFramework/Character.h"
 #include "WarPatrolCharacter.generated.h"
 
+class UAIPerceptionStimuliSourceComponent;
+
 UCLASS()
 class MECHANICS_API AWarPatrolCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
 };

@@ -16,8 +16,9 @@ public class Mechanics : ModuleRules
 			"EnhancedInput", 
 			"GameplayAbilities", 
 			"AnimGraphRuntime",
-            "MotionWarping"
-		});
+            "MotionWarping",
+            "NavigationSystem"
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayTags", "GameplayTasks", "AIModule" });
 	}

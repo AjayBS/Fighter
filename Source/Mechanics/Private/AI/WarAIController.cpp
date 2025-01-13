@@ -5,6 +5,7 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
+#include "Interfaces/PlayerInterface.h"
 #include "Navigation/CrowdFollowingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -21,11 +22,12 @@ AWarAIController::AWarAIController(const FObjectInitializer& ObjectInitializer)
 
 	AISenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("EnemySenseConfig_Sight");
 	AISenseConfig_Sight->DetectionByAffiliation.bDetectEnemies = true;
-	AISenseConfig_Sight->DetectionByAffiliation.bDetectFriendlies = false;
-	AISenseConfig_Sight->DetectionByAffiliation.bDetectNeutrals = false;
-	AISenseConfig_Sight->SightRadius = 5000.f;
-	AISenseConfig_Sight->LoseSightRadius = 0.f;
-	AISenseConfig_Sight->PeripheralVisionAngleDegrees = 360.f;
+	AISenseConfig_Sight->DetectionByAffiliation.bDetectFriendlies = true;
+	AISenseConfig_Sight->DetectionByAffiliation.bDetectNeutrals = true;
+	AISenseConfig_Sight->SightRadius = 500.f;
+	//AISenseConfig_Sight->LoseSightRadius = 0.f;
+	AISenseConfig_Sight->PeripheralVisionAngleDegrees = 90.f;
+	AISenseConfig_Sight->SetMaxAge(5.0f);
 
 	EnemyPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>("EnemyPerceptionComponent");
 	EnemyPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
@@ -76,12 +78,9 @@ void AWarAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimu
 {
 	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
-		if (!BlackboardComponent->GetValueAsObject(FName("TargetActor")))
+		if (Actor->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
 		{
-			if (Stimulus.WasSuccessfullySensed() && Actor)
-			{
-				BlackboardComponent->SetValueAsObject(FName("TargetActor"), Actor);
-			}
+			BlackboardComponent->SetValueAsBool(FName("CanSeePlayer"), Stimulus.WasSuccessfullySensed());
 		}
 	}	
 }
