@@ -10,6 +10,9 @@ class UBlackboardComponent;
 class UBehaviorTreeComponent;
 class UAIPerceptionComponent;
 class UAISenseConfig_Sight;
+class UAISenseConfig_Hearing;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSenseDetection, bool, bHasSeenSomething, float, DetectionSpeed);
 
 /**
  * 
@@ -32,11 +35,20 @@ protected:
 	UFUNCTION()
 	virtual void OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FSenseDetection SenseDetection;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAIPerceptionComponent> EnemyPerceptionComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAISenseConfig_Sight> AISenseConfig_Sight;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UAISenseConfig_Hearing> AISenseConfig_Hearing;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Curve")
+	UCurveFloat* SightCurve;
 
 	UPROPERTY()
 	TObjectPtr<UBehaviorTreeComponent> BehavioreTreeComponent;

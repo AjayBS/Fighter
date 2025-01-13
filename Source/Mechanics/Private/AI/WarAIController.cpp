@@ -6,9 +6,11 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Interfaces/PlayerInterface.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Navigation/CrowdFollowingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarAIController, Error, All);
 
@@ -25,12 +27,19 @@ AWarAIController::AWarAIController(const FObjectInitializer& ObjectInitializer)
 	AISenseConfig_Sight->DetectionByAffiliation.bDetectFriendlies = true;
 	AISenseConfig_Sight->DetectionByAffiliation.bDetectNeutrals = true;
 	AISenseConfig_Sight->SightRadius = 500.f;
-	//AISenseConfig_Sight->LoseSightRadius = 0.f;
 	AISenseConfig_Sight->PeripheralVisionAngleDegrees = 90.f;
 	AISenseConfig_Sight->SetMaxAge(5.0f);
 
+	AISenseConfig_Hearing = CreateDefaultSubobject<UAISenseConfig_Hearing>("EnemySenseConfig_Hearing");
+	AISenseConfig_Hearing->HearingRange = 3000.0f;
+	AISenseConfig_Hearing->DetectionByAffiliation.bDetectEnemies = true;
+	AISenseConfig_Hearing->DetectionByAffiliation.bDetectNeutrals = true;
+	AISenseConfig_Hearing->DetectionByAffiliation.bDetectFriendlies = true;
+	AISenseConfig_Hearing->SetMaxAge(35.0f);
+
 	EnemyPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>("EnemyPerceptionComponent");
 	EnemyPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
+	EnemyPerceptionComponent->ConfigureSense(*AISenseConfig_Hearing);
 	EnemyPerceptionComponent->SetDominantSense(UAISenseConfig_Sight::StaticClass());
 	EnemyPerceptionComponent->OnTargetPerceptionUpdated.AddUniqueDynamic(this, &ThisClass::OnEnemyPerceptionUpdated);
 
@@ -80,7 +89,20 @@ void AWarAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimu
 	{
 		if (Actor->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
 		{
-			BlackboardComponent->SetValueAsBool(FName("CanSeePlayer"), Stimulus.WasSuccessfullySensed());
+			// Get the Sense ID for sight and hearing
+			FAISenseID SightSenseID = UAISense::GetSenseID<UAISense_Sight>();
+			FAISenseID HearingSenseID = UAISense::GetSenseID<UAISense_Hearing>();
+
+			if (Stimulus.Type == SightSenseID)
+			{
+				float Dist = FVector::Distance(Stimulus.StimulusLocation, Stimulus.ReceiverLocation);
+				float Range = UKismetMathLibrary::NormalizeToRange(Dist, 0.f, 500.f);
+				BlackboardComponent->SetValueAsBool(FName("IsAlert"), Stimulus.WasSuccessfullySensed());
+
+				SenseDetection.Broadcast(Stimulus.WasSuccessfullySensed(), SightCurve->GetFloatValue(Range));
+			}
+			
+			BlackboardComponent->SetValueAsVector(TEXT("TargetLocation"), Stimulus.StimulusLocation);
 		}
 	}	
 }
