@@ -93,15 +93,21 @@ void AWarAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimu
 			FAISenseID SightSenseID = UAISense::GetSenseID<UAISense_Sight>();
 			FAISenseID HearingSenseID = UAISense::GetSenseID<UAISense_Hearing>();
 
+			if (Stimulus.Type == HearingSenseID)
+			{
+				BlackboardComponent->SetValueAsBool(FName("HasHeardNoise"), Stimulus.WasSuccessfullySensed());
+			}
+
+			float DetectionValue = 0.f;
 			if (Stimulus.Type == SightSenseID)
 			{
 				float Dist = FVector::Distance(Stimulus.StimulusLocation, Stimulus.ReceiverLocation);
 				float Range = UKismetMathLibrary::NormalizeToRange(Dist, 0.f, 500.f);
-				BlackboardComponent->SetValueAsBool(FName("IsAlert"), Stimulus.WasSuccessfullySensed());
-
-				SenseDetection.Broadcast(Stimulus.WasSuccessfullySensed(), SightCurve->GetFloatValue(Range));
+				DetectionValue = SightCurve->GetFloatValue(Range);
+				BlackboardComponent->SetValueAsBool(FName("HasSeenPlayer"), Stimulus.WasSuccessfullySensed());
+				SenseDetection.Broadcast(Stimulus.WasSuccessfullySensed(), DetectionValue);
 			}
-			
+
 			BlackboardComponent->SetValueAsVector(TEXT("TargetLocation"), Stimulus.StimulusLocation);
 		}
 	}	
