@@ -11,6 +11,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISenseConfig_Hearing.h"
+#include "Perception/AISense_Touch.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWarAIController, Error, All);
 
@@ -92,6 +93,7 @@ void AWarAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimu
 			// Get the Sense ID for sight and hearing
 			FAISenseID SightSenseID = UAISense::GetSenseID<UAISense_Sight>();
 			FAISenseID HearingSenseID = UAISense::GetSenseID<UAISense_Hearing>();
+			FAISenseID TouchSenseID = UAISense::GetSenseID<UAISense_Touch>();
 
 			if (Stimulus.Type == HearingSenseID)
 			{
@@ -99,10 +101,10 @@ void AWarAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimu
 			}
 
 			float DetectionValue = 0.f;
-			if (Stimulus.Type == SightSenseID)
+			if (Stimulus.Type == SightSenseID || Stimulus.Type == TouchSenseID)
 			{
 				float Dist = FVector::Distance(Stimulus.StimulusLocation, Stimulus.ReceiverLocation);
-				float Range = UKismetMathLibrary::NormalizeToRange(Dist, 0.f, 500.f);
+				float Range = UKismetMathLibrary::NormalizeToRange(Dist, 0.f, 1000.f);
 				DetectionValue = SightCurve->GetFloatValue(Range);
 				BlackboardComponent->SetValueAsBool(FName("HasSeenPlayer"), Stimulus.WasSuccessfullySensed());
 				SenseDetection.Broadcast(Stimulus.WasSuccessfullySensed(), DetectionValue);
