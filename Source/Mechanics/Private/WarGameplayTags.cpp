@@ -13,6 +13,11 @@ void FWarGameplayTags::InitializeNativeGameplayTags()
 		FString("Punching a character")
 		);
 
+	GameplayTags.Abilities_Primary_Punch = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Primary.Stone"),
+		FString("Throws a stone to distract a character.")
+	);
+
 	/**
 	 * Input Tags
 	 */

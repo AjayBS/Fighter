@@ -17,6 +17,7 @@ public:
 	static void InitializeNativeGameplayTags();
 
 	FGameplayTag Abilities_Primary_Punch;
+	FGameplayTag Abilities_Throw_Stone;
 
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
