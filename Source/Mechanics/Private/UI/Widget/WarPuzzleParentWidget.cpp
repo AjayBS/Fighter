@@ -185,6 +185,7 @@ bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected, int32 R
 			else
 			{
 				ClearLine(SrcTile.Row, SrcTile.Column, SrcTile.Color);
+				return true;
 			}
 		}
 	}
