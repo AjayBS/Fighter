@@ -30,7 +30,7 @@ public:
 
 	EColorCodes GetCurrentActiveArraysColor(int32 Row, int32 Column);
 
-	bool HandleSelectedTileOperation(bool bSelected);
+	bool HandleSelectedTileOperation(bool bSelected, int32 Row, int32 Column);
 	bool CheckIfAllPuzzlesAreSolved();
 
 	UFUNCTION()
@@ -67,7 +67,7 @@ public:
 private:
 	TArray<UWarTileWidget*> WarTileWidgets;
 
-	bool IsPathComplete(FTileInfo& Src, FTileInfo& Dest);
+	bool IsPathComplete(FTileInfo& Src, FTileInfo& Dest, int32 CurrentRowClicked, int32 CurrentColumnClicked);
 	bool IsAdjacent(FTileInfo& Tile1, FTileInfo& Tile2);
 	void RemoveElementFromActiveTiles(FTileInfo& InTile);
 	void RemoveElementFromSolvedTileArray(EColorCodes Color);

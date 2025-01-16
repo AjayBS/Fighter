@@ -69,7 +69,7 @@ void UWarPuzzleParentWidget::CreateGrid()
 
 void UWarPuzzleParentWidget::SetActiveTile(int32 Row, int32 Column, bool bSelected)
 {
-	if (HandleSelectedTileOperation(bSelected))
+	if (HandleSelectedTileOperation(bSelected, Row, Column))
 	{		
 		if (CheckIfAllPuzzlesAreSolved())
 		{
@@ -147,7 +147,7 @@ EColorCodes UWarPuzzleParentWidget::GetCurrentActiveArraysColor(int32 Row, int32
 	return EColorCodes::None;
 }
 
-bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected)
+bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected, int32 Row, int32 Column)
 {
 	if (bSelected)
 	{
@@ -174,13 +174,17 @@ bool UWarPuzzleParentWidget::HandleSelectedTileOperation(bool bSelected)
 				}
 			}
 
-			if (IsPathComplete(SrcTile, DestTile))
+			if (IsPathComplete(SrcTile, DestTile, Row, Column))
 			{
 				CurrentLinesSolved++;
-				UE_LOG(LogTemp, Verbose, TEXT("Puzzle solved here. Number of lines increased to %d"), CurrentLinesSolved);
+				UE_LOG(LogTemp, Warning, TEXT("Puzzle solved here. Number of lines increased to %d"), CurrentLinesSolved);
 				SolvedTileArray.Add(CurrentActiveArray);
 				CurrentActiveArray.Empty();
 				return true;
+			}
+			else
+			{
+				ClearLine(SrcTile.Row, SrcTile.Column, SrcTile.Color);
 			}
 		}
 	}
@@ -310,7 +314,7 @@ UWarTileWidget* UWarPuzzleParentWidget::GetWidgetAtTile(int32 Row, int32 Col) co
 	return nullptr;
 }
 
-bool UWarPuzzleParentWidget::IsPathComplete(FTileInfo& Src, FTileInfo& Dest)
+bool UWarPuzzleParentWidget::IsPathComplete(FTileInfo& Src, FTileInfo& Dest, int32 CurrentRowClicked, int32 CurrentColumnClicked)
 {
 	if (CurrentActiveArray.Num() < 2)
 	{
@@ -328,7 +332,14 @@ bool UWarPuzzleParentWidget::IsPathComplete(FTileInfo& Src, FTileInfo& Dest)
 		}
 	}
 
-	return IsAdjacent(CurrentActiveArray.Last(), Dest) || IsAdjacent(CurrentActiveArray.Last(), Src);
+	if (CurrentColumnClicked == Src.Column && CurrentRowClicked == Src.Row)
+	{
+		return IsAdjacent(CurrentActiveArray.Last(), Src);
+	}
+	else
+	{
+		return IsAdjacent(CurrentActiveArray.Last(), Dest);
+	}
 }
 
 bool UWarPuzzleParentWidget::IsAdjacent(FTileInfo& Tile1, FTileInfo& Tile2)
@@ -361,7 +372,7 @@ void UWarPuzzleParentWidget::RemoveElementFromSolvedTileArray(EColorCodes Color)
 			{
 				SolvedTileArray.RemoveAt(i);
 				CurrentLinesSolved--;
-				UE_LOG(LogTemp, Verbose, TEXT("Puzzle solved here. Number of lines decreased to %d"), CurrentLinesSolved);
+				UE_LOG(LogTemp, Warning, TEXT("Puzzle solved here. Number of lines decreased to %d"), CurrentLinesSolved);
 				break;
 			}
 		}
